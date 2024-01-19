@@ -21,7 +21,7 @@ export default function TripList() {
     }, [trips])
 
     const addATrip = async (trip) => {
-        axios.post('http://localhost:3001/', trip)
+        axios.post('http://localhost:3001/trips', trip)
             .then(function (response) {
                 console.log(response);
             })
