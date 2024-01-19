@@ -6,6 +6,8 @@ const DayModel = require('./models/Day')
 const ActivityModel = require('./models/Activity');
 const NoteModel = require('./models/Note');
 const tripsRouter = require('./routers/trips.js')
+const daysRouter = require('./routers/days.js')
+const activitiesRouter = require('./routers/activities.js')
 
 const app = express();
 app.use(cors());
@@ -28,6 +30,8 @@ const connectToMongo = async () => {
 }
 connectToMongo();
 app.use('/trips', tripsRouter);
+app.use('/days', daysRouter);
+app.use('/activities', activitiesRouter);
 
 // app.get('/trips', (req, res) => {
 //     TripModel.find()
@@ -42,12 +46,12 @@ app.use('/trips', tripsRouter);
 //         .catch(err => res.json(err))
 // })
 
-app.get('/days/:id', (req, res) => {
-    const { id } = req.query;
-    DayModel.findById(id).populate({ path: 'activities', populate: { path: 'notes' } })
-        .then(day => res.json(day))
-        .catch(err => res.json(err))
-})
+// app.get('/days/:id', (req, res) => {
+//     const { id } = req.query;
+//     DayModel.findById(id).populate({ path: 'activities', populate: { path: 'notes' } })
+//         .then(day => res.json(day))
+//         .catch(err => res.json(err))
+// })
 
 // app.post('/trips', async (req, res) => {
 //     const newTrip = new TripModel(req.body);
@@ -63,35 +67,35 @@ app.get('/days/:id', (req, res) => {
 
 // })
 
-app.post('/days/:id/addAnActivity', async (req, res) => {
-    const { id } = req.query;
-    const day = await DayModel.findById(id)
-    const activity = new ActivityModel(req.body)
-    await activity.save()
-    day.activities.push(activity)
-    await day.save()
-    const response = {
-        day: await day.populate({ path: 'activities', populate: { path: 'notes' } }),
-        activity: activity
-    }
-    res.json(response)
-})
+// app.post('/days/:id/addAnActivity', async (req, res) => {
+//     const { id } = req.query;
+//     const day = await DayModel.findById(id)
+//     const activity = new ActivityModel(req.body)
+//     await activity.save()
+//     day.activities.push(activity)
+//     await day.save()
+//     const response = {
+//         day: await day.populate({ path: 'activities', populate: { path: 'notes' } }),
+//         activity: activity
+//     }
+//     res.json(response)
+// })
 
-app.post(`/activities/:id/note`, async (req, res) => {
-    const { id, note } = req.body;
-    console.log(id, note)
-    const activity = await ActivityModel.findById(id)
-    console.log(activity)
-    const newNote = new NoteModel(note)
-    console.log(newNote)
-    await newNote.save()
-    activity.notes.push(newNote)
-    await activity.save()
-    console.log(activity)
-    newActivity = await activity.populate('notes')
-    console.log(newActivity)
-    res.json(newActivity)
-})
+// app.post(`/activities/:id/note`, async (req, res) => {
+//     const { id, note } = req.body;
+//     console.log(id, note)
+//     const activity = await ActivityModel.findById(id)
+//     console.log(activity)
+//     const newNote = new NoteModel(note)
+//     console.log(newNote)
+//     await newNote.save()
+//     activity.notes.push(newNote)
+//     await activity.save()
+//     console.log(activity)
+//     newActivity = await activity.populate('notes')
+//     console.log(newActivity)
+//     res.json(newActivity)
+// })
 
 // //patch use req.body
 // app.patch('/trips/:id/destination', async (req, res) => {
@@ -102,23 +106,23 @@ app.post(`/activities/:id/note`, async (req, res) => {
 //         .catch(err => res.json(err))
 // })
 
-app.patch('/activities/:id/title', async (req, res) => {
-    const { id, title } = req.body;
-    await ActivityModel.updateOne({ _id: id }, { title })
-    ActivityModel.findById(id)
-        .then(async activity => res.json(await activity.populate('notes')))
-        .catch(err => res.json(err))
-})
+// app.patch('/activities/:id/title', async (req, res) => {
+//     const { id, title } = req.body;
+//     await ActivityModel.updateOne({ _id: id }, { title })
+//     ActivityModel.findById(id)
+//         .then(async activity => res.json(await activity.populate('notes')))
+//         .catch(err => res.json(err))
+// })
 
-app.patch('/activities/:id/location', async (req, res) => {
-    const { id, location } = req.body;
-    await ActivityModel.updateOne({ _id: id }, { location })
-    ActivityModel.findById(id)
-        .then(async activity => {
-            const newActivity = await activity.populate('notes')
-            res.json(newActivity)
-        })
-})
+// app.patch('/activities/:id/location', async (req, res) => {
+//     const { id, location } = req.body;
+//     await ActivityModel.updateOne({ _id: id }, { location })
+//     ActivityModel.findById(id)
+//         .then(async activity => {
+//             const newActivity = await activity.populate('notes')
+//             res.json(newActivity)
+//         })
+// })
 
 // app.patch('/trips/:id/duration', async (req, res) => {
 //     const { id } = req.body;
@@ -130,12 +134,12 @@ app.patch('/activities/:id/location', async (req, res) => {
 //     res.json(trip)
 // })
 
-app.patch('/activities/:activityId/notes/:noteid', async (req, res) => {
-    const { activityId, noteId, note } = req.body;
-    console.log(activityId, noteId, note)
-    const newNote = await NoteModel.findByIdAndUpdate({ _id: noteId }, { category: note.category, content: note.content })
-    res.json(await ActivityModel.findById(activityId).populate('notes'))
-})
+// app.patch('/activities/:activityId/notes/:noteid', async (req, res) => {
+//     const { activityId, noteId, note } = req.body;
+//     console.log(activityId, noteId, note)
+//     const newNote = await NoteModel.findByIdAndUpdate({ _id: noteId }, { category: note.category, content: note.content })
+//     res.json(await ActivityModel.findById(activityId).populate('notes'))
+// })
 
 // //delete a trip
 // app.delete('/trips/:id', async (req, res) => {
@@ -189,41 +193,41 @@ app.patch('/activities/:activityId/notes/:noteid', async (req, res) => {
 // })
 
 // delete an activity
-app.delete('/days/:dayId/activities/:id', async (req, res) => {
-    const { dayId, activityId } = req.query;
-    console.log(dayId, activityId)
-    const day = await DayModel.findById(dayId)
-    await day.activities.pull({ _id: activityId })
-    const activity = await ActivityModel.findById(activityId).populate('notes')
-    activity.notes.map(async (note) => {
-        await NoteModel.findByIdAndDelete(note._id)
-    })
-    await ActivityModel.findByIdAndDelete(activityId)
-    await day.save()
-    res.json(await day.populate({ path: 'activities', populate: { path: 'notes' } }))
-    // DayModel.findOneAndDelete({ _id: id })
-    //     .then(id => res.json(id))
-    //     .catch(err => res.json(err))
+// app.delete('/days/:dayId/activities/:id', async (req, res) => {
+//     const { dayId, activityId } = req.query;
+//     console.log(dayId, activityId)
+//     const day = await DayModel.findById(dayId)
+//     await day.activities.pull({ _id: activityId })
+//     const activity = await ActivityModel.findById(activityId).populate('notes')
+//     activity.notes.map(async (note) => {
+//         await NoteModel.findByIdAndDelete(note._id)
+//     })
+//     await ActivityModel.findByIdAndDelete(activityId)
+//     await day.save()
+//     res.json(await day.populate({ path: 'activities', populate: { path: 'notes' } }))
+//     // DayModel.findOneAndDelete({ _id: id })
+//     //     .then(id => res.json(id))
+//     //     .catch(err => res.json(err))
 
-})
+// })
 
 //delete a note
-app.delete('/activities/:activityId/notes/:id', async (req, res) => {
-    const { activityId, noteId } = req.query;
-    console.log(activityId, noteId)
-    const activity = await ActivityModel.findById(activityId)
-    await activity.notes.pull({ _id: noteId })
-    await NoteModel.findByIdAndDelete(noteId)
-    await activity.save()
-    res.json(await activity.populate('notes'))
-    // DayModel.findOneAndDelete({ _id: id })
-    //     .then(id => res.json(id))
-    //     .catch(err => res.json(err))
+// app.delete('/activities/:activityId/notes/:id', async (req, res) => {
+//     const { activityId, noteId } = req.query;
+//     console.log(activityId, noteId)
+//     const activity = await ActivityModel.findById(activityId)
+//     await activity.notes.pull({ _id: noteId })
+//     await NoteModel.findByIdAndDelete(noteId)
+//     await activity.save()
+//     res.json(await activity.populate('notes'))
+//     // DayModel.findOneAndDelete({ _id: id })
+//     //     .then(id => res.json(id))
+//     //     .catch(err => res.json(err))
 
-})
+// })
 
 
 
 app.listen(3001, () => {
-    console.log("Port 3001 is listening..")
+    console.log("Port 3001 is listening")
 })
