@@ -5,7 +5,7 @@ import AddTripForm from './AddTripForm';
 import TripItinerary from "./TripItinerary";
 import './TripList.css'
 import './TripItinerary.css'
-import CloseIcon from '@mui/icons-material/Close';
+
 
 export default function TripList() {
     const [trips, setTrips] = useState([]);
@@ -68,18 +68,6 @@ export default function TripList() {
                 console.log(error);
             });
     }
-
-    // const addADay = (duration) => {
-    //     const id = displayingTrip._id
-    //     axios.patch(`http://localhost:3001/trips/${id}/duration`, { id, duration })
-    //         .then(trips => {
-    //             setTrips(trips.data);
-    //             setFocusTrip(displayingTrip.duration);
-    //         })
-    //         .catch(function (error) {
-    //             console.log(error);
-    //         });
-    // }
 
     return (<div className="TripList">
         <div className="TripItinerary">

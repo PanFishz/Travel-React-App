@@ -14,6 +14,8 @@ export default function Activity({ activity, showActivity }) {
     const [formTitleVisible, setFormTitleVisible] = useState(false)
     const [formLocationVisible, setFormLocationVisible] = useState(false)
     const [formAddNoteVisible, setFormAddNoteVisible] = useState(false)
+    //https://www.google.com/search?q=louvre+museum
+    const locationQueryString = "https://www.google.com/search?q=" + activity.location.replace(/\s+/g, '+')
 
 
     const editTitle = (newTitle) => {
@@ -69,10 +71,10 @@ export default function Activity({ activity, showActivity }) {
             .catch(err => console.log(err))
     }
 
-    const editANote = (id, newNote) => {
+    const editANote = (id, newNote, filename) => {
         console.log(id, newNote)
         axios.patch(`http://localhost:3001/activities/${activity._id}/notes/${id}`, {
-            activityId: activity._id, noteId: id, note: newNote
+            activityId: activity._id, noteId: id, note: newNote, filename: filename
         })
             .then(activity => {
                 setFormAddNoteVisible(false);
@@ -83,19 +85,78 @@ export default function Activity({ activity, showActivity }) {
             .catch(err => console.log(err))
     }
 
+    const addAnImage = (formData) => {
+        console.log(formData)
+        axios.post(`http://localhost:3001/activities/${activity._id}/images`,
+            formData,
+            {
+                formSerializer: {
+                    indexes: null,
+                },
+                headers:
+                    { "Content-type": "multipart/form-data" }
+            }).then(res => {
+                console.log(res.data);
+                addANote(res.data)
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    const editAnImage = (id, formData, filename) => {
+        console.log(formData)
+        axios.post(`http://localhost:3001/activities/${activity._id}/images`,
+            formData,
+            {
+                formSerializer: {
+                    indexes: null,
+                },
+                headers:
+                    { "Content-type": "multipart/form-data" }
+            }).then(res => {
+                console.log(res.data);
+                editANote(id, res.data, filename);
+                // if (filename) {
+                //     axios.delete(`http://localhost:3001/images/${filename}`,
+                //         filename)
+                //         .then(res => {
+                //             console.log(res.data);
+                //             addANote(res.data)
+                //         })
+                //         .catch(err => {
+                //             console.log(err);
+                //         })
+                // }
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const cancelEditTitle = () => {
+        setFormTitleVisible(false)
+    }
+
+    const cancelEditLocation = () => {
+        setFormLocationVisible(false)
+    }
+
+    const cancelAddNote = () => {
+        setFormAddNoteVisible(false)
+    }
 
     return (
         <div>
             {!formTitleVisible && <h2>{activity.title} <EditIcon onClick={() => { setFormTitleVisible(true) }} /></h2>}
-            {formTitleVisible && <EditActivityTitleForm title={activity.title} submitFun={editTitle} />}
-            {!formLocationVisible && <h4>{activity.location} <EditIcon onClick={() => { setFormLocationVisible(true) }} /></h4>}
-            {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} />}
+            {formTitleVisible && <EditActivityTitleForm title={activity.title} submitFun={editTitle} cancelFun={cancelEditTitle} />}
+            {!formLocationVisible && <h4><a href={locationQueryString} target="_blank">{activity.location}</a> <EditIcon onClick={() => { setFormLocationVisible(true) }} /></h4>}
+            {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} cancelFun={cancelEditLocation} />}
             <div>
                 Notes: {activity.notes.map(note => {
-                    return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} />
+                    return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} />
                 })}
                 {!formAddNoteVisible && <AddIcon onClick={() => { setFormAddNoteVisible(true) }} />}
-                {formAddNoteVisible && <AddNoteForm submitFun={addANote} />}
+                {formAddNoteVisible && <AddNoteForm submitFun={addANote} submitImageFun={addAnImage} cancelFun={cancelAddNote} />}
 
             </div>
         </div>

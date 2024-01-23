@@ -1,6 +1,8 @@
 const DayModel = require('../models/Day')
 const ActivityModel = require('../models/Activity');
 const NoteModel = require('../models/Note');
+const { cloudinary } = require('../cloudinary')
+
 
 module.exports.getADay = async (req, res) => {
     const { id } = req.query;
@@ -15,7 +17,10 @@ module.exports.deleteAnActivityFromDay = async (req, res) => {
     await day.activities.pull({ _id: activityId })
     const activity = await ActivityModel.findById(activityId).populate('notes')
     activity.notes.map(async (note) => {
-        await NoteModel.findByIdAndDelete(note._id)
+        const deletedNote = await NoteModel.findByIdAndDelete(note._id)
+        if (deletedNote.filename) {
+            await cloudinary.uploader.destroy(deletedNote.filename);
+        }
     })
     await ActivityModel.findByIdAndDelete(activityId)
     await day.save()

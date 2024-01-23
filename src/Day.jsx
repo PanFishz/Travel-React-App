@@ -47,6 +47,9 @@ export default function Day({ day, showActivity, deleteDay }) {
             });
 
     }
+    const cancelFun = () => {
+        setActivityFormVisible(false)
+    }
 
 
     return (
@@ -61,7 +64,7 @@ export default function Day({ day, showActivity, deleteDay }) {
                 )
             })}
             {!activityFormVisible && <AddIcon onClick={() => setActivityFormVisible(true)} />}
-            {activityFormVisible && <div><AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} /></div>}
+            {activityFormVisible && <div><AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} /></div>}
         </div>
     )
 }

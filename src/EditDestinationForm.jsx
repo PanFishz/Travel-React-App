@@ -1,8 +1,20 @@
 import { useState } from "react";
-import CheckIcon from '@mui/icons-material/Check';
+import FormInput from "./components/FormInput";
 
 export default function EditDestinationForm({ submitFun, destination, id, cleanup }) {
     const [formData, setFormData] = useState(destination);
+
+    const input = {
+        name: "destination",
+        type: "text",
+        placeholder: "Destination",
+        errorMessage: "Destination must not be empty",
+        label: "destination",
+        required: true
+    }
+    const onChange = (e) => {
+        setFormData(e.target.value)
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -13,8 +25,12 @@ export default function EditDestinationForm({ submitFun, destination, id, cleanu
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <input type="text" value={formData} required onChange={(e) => { setFormData(e.target.value) }} />
-                <CheckIcon onClick={handleSubmit} />
+                <FormInput {...input} value={formData} onChange={onChange} />
+                {/* <input type="text" value={formData} required onChange={(e) => { setFormData(e.target.value) }} /> */}
+                {/* <CheckIcon onClick={handleSubmit} />
+                <CloseIcon onClick={cleanup} /> */}
+                <button>Submit</button>
+                <button type="button" onClick={cleanup}>Cancel</button>
             </form>
         </div>
     )

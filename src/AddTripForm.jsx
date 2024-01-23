@@ -21,8 +21,9 @@ export default function AddTripForm({ submitFun, cancelFun }) {
             name: "duration",
             type: "number",
             placeholder: "Duration",
-            errorMessage: "Duration must not be empty",
+            errorMessage: "Duration must be at least 1",
             label: "duration",
+            min: 1,
             required: true
 
         }]
@@ -57,8 +58,8 @@ export default function AddTripForm({ submitFun, cancelFun }) {
                     onChange={onChange}
                 />
             ))}
-            <button>Submit</button>
-            <button onClick={cancelFun}>Cancel</button>
+            <button>Add</button>
+            <button type="button" onClick={cancelFun}>Cancel</button>
 
         </form>
     )

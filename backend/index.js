@@ -9,6 +9,10 @@ const tripsRouter = require('./routers/trips.js')
 const daysRouter = require('./routers/days.js')
 const activitiesRouter = require('./routers/activities.js')
 
+const fs = require('fs')
+const multer = require('multer')
+const upload = multer({ dest: 'images/' })
+
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -32,6 +36,8 @@ connectToMongo();
 app.use('/trips', tripsRouter);
 app.use('/days', daysRouter);
 app.use('/activities', activitiesRouter);
+
+
 
 // app.get('/trips', (req, res) => {
 //     TripModel.find()

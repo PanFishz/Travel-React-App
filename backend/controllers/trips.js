@@ -2,6 +2,7 @@ const TripModel = require('../models/Trip')
 const DayModel = require('../models/Day')
 const ActivityModel = require('../models/Activity');
 const NoteModel = require('../models/Note');
+const { cloudinary } = require('../cloudinary')
 
 module.exports.addATrip = async (req, res) => {
     const newTrip = new TripModel(req.body);
@@ -34,7 +35,10 @@ module.exports.deleteATrip = async (req, res) => {
     trip.days.map(async (day) => {
         day.activities.map(async (activity) => {
             activity.notes.map(async (note) => {
-                await NoteModel.findByIdAndDelete(note._id)
+                const deletedNote = await NoteModel.findByIdAndDelete(note._id)
+                if (deletedNote.filename) {
+                    await cloudinary.uploader.destroy(deletedNote.filename);
+                }
             })
             await ActivityModel.findByIdAndDelete(activity._id)
         })
@@ -62,7 +66,11 @@ module.exports.deleteADayFromTrip = async (req, res) => {
     const day = await DayModel.findById(dayId).populate({ path: 'activities', populate: { path: 'notes' } })
     day.activities.map(async (activity) => {
         activity.notes.map(async (note) => {
-            await NoteModel.findByIdAndDelete(note._id)
+            const deletedNote = await NoteModel.findByIdAndDelete(note._id)
+            if (deletedNote.filename) {
+                await cloudinary.uploader.destroy(deletedNote.filename);
+            }
+
         })
         await ActivityModel.findByIdAndDelete(activity._id)
     })

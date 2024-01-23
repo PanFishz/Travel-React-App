@@ -11,6 +11,7 @@ export default function Trip({ trip, deleteFun, selectFun, editDestinationFun })
     const handleCleanUp = () => {
         setEditDestinationForm(false);
     }
+
     return (<div className="Trip" key={trip._id}>
         <div >
             <span onClick={() => selectFun(trip._id)}>Destination: {trip.destination}</span>
