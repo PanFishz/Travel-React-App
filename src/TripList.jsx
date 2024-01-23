@@ -5,9 +5,10 @@ import AddTripForm from './AddTripForm';
 import TripItinerary from "./TripItinerary";
 import './TripList.css'
 import './TripItinerary.css'
+import NavBar from './components/NavBar'
 
 
-export default function TripList() {
+export default function TripList({ isMobile }) {
     const [trips, setTrips] = useState([]);
     const [addTripFormVisible, setAddTripFormVisible] = useState(false)
     const [focusedTrip, setFocusedTrip] = useState("")
@@ -69,17 +70,30 @@ export default function TripList() {
             });
     }
 
-    return (<div className="TripList">
-        <div className="TripItinerary">
-            {!addTripFormVisible && <button onClick={() => setAddTripFormVisible(true)}>Add a Trip</button>}
-            {addTripFormVisible && <div><AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} /></div>}
-            {trips.map(trip => {
-                return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} />
-            })}
-        </div>
+    return (
+        <div >
+            <div><NavBar addATrip={() => setAddTripFormVisible(true)} /></div>
+            {!isMobile && <div className="TripList"><div className="TripItinerary">
+                {!addTripFormVisible && <button onClick={() => setAddTripFormVisible(true)}>Add a Trip</button>}
+                {addTripFormVisible && <div><AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} /></div>}
+                {trips.map(trip => {
+                    return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} />
+                })}
+            </div>
+                {focusedTrip !== "" && <div className="TripItinerary"><TripItinerary trip={displayingTrip} focusATrip={focusATrip} focusedTrip={focusedTrip} /></div>}</div>
+            }
 
-        {focusedTrip !== "" && <div className="TripItinerary"><TripItinerary trip={displayingTrip} focusATrip={focusATrip} focusedTrip={focusedTrip} /></div>}
-    </div>)
+            {isMobile && <div className="TripList"><div className="TripItinerary">
+                {!addTripFormVisible && <button onClick={() => setAddTripFormVisible(true)}>Add a Trip</button>}
+                {addTripFormVisible && <div><AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} /></div>}
+                {trips.map(trip => {
+                    return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} />
+                })}
+            </div>
+                {focusedTrip !== "" && <div className="TripItinerary"><TripItinerary trip={displayingTrip} focusATrip={focusATrip} focusedTrip={focusedTrip} /></div>}</div>
+            }
+        </div>
+    )
 }
 
 // Methods	Urls	Actions

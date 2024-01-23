@@ -44,7 +44,7 @@ export default function Activity({ activity, showActivity }) {
             .catch(err => console.log(err))
     }
     const addANote = (note) => {
-        console.log("Note:    ", note, activity._id)
+        console.log("Note:", note, activity._id)
         axios.post(`http://localhost:3001/activities/${activity._id}/note`, {
             id: activity._id, note: note
         })
