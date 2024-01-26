@@ -7,6 +7,12 @@ import ImageIcon from '@mui/icons-material/Image';
 import NotesIcon from '@mui/icons-material/Notes';
 import EditNoteForm from "./EditNoteForm";
 import './Note.css'
+import '../public/stylesheets/NoteImage.css';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import Box from '@mui/material/Box';
+
+
 
 export default function Note({ note, deleteNote, editNote, submitImageFun }) {
     const [editNoteFormVisible, setEditNoteFormVisible] = useState(false)
@@ -41,18 +47,27 @@ export default function Note({ note, deleteNote, editNote, submitImageFun }) {
     }
 
     return (
-        <div className="Note">
+        <Box className="Note">
             {!editNoteFormVisible &&
-                <div>
-                    <div>
+                <Box>
 
-                    </div>
                     {categoryIcon}{noteType}
-                    <EditIcon onClick={() => { setEditNoteFormVisible(true) }} />
-                    <DeleteIcon onClick={deleteNote} />
-                </div>}
+                    <Tooltip title="Edit this note">
+                        <IconButton onClick={() => { setEditNoteFormVisible(true) }}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete this note">
+                        <IconButton onClick={deleteNote}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    {/* <EditIcon onClick={() => { setEditNoteFormVisible(true) }} />
+                    <DeleteIcon onClick={deleteNote} /> */}
+                </Box>}
             {editNoteFormVisible && <EditNoteForm note={note} submitFun={editNote} submitImageFun={submitImageFun} afterSubmitFun={() => { setEditNoteFormVisible(false) }} />}
-        </div>
+        </Box>
     )
 
 }

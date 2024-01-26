@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import FormInput from "./components/FormInput";
+import './components/FormInput.css'
 
 
 
@@ -52,7 +53,7 @@ export default function AddNoteForm({ submitFun, submitImageFun, cancelFun }) {
                     <option value="note">note</option>
                 </select>
                 {category === "image" ?
-                    <div>
+                    <div className="formInput">
                         <input
                             filename={file}
                             onChange={onChange}
@@ -61,7 +62,7 @@ export default function AddNoteForm({ submitFun, submitImageFun, cancelFun }) {
                             required
                         ></input>
                     </div> :
-                    <FormInput {...input} value={content} onChange={(e) => setContent(e.target.value)} />
+                    <FormInput {...input} value={content} onChange={(e) => setContent(e.target.value)} formType="textarea" />
                 }
                 <button type='submit'>Submit</button>
                 <button type="button" onClick={cancelFun}>Cancel</button>

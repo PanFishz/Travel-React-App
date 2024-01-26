@@ -13,7 +13,7 @@ module.exports.addATrip = async (req, res) => {
         newTrip.days.push(day);
     }
     const result = newTrip.save();
-    res.send(result)
+    res.json(newTrip)
 }
 
 module.exports.getAllTrips = async (req, res) => {

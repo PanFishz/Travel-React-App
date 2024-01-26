@@ -1,5 +1,7 @@
 import { useState } from "react"
 import FormInput from "./components/FormInput"
+import Box from '@mui/material/Box';
+
 
 
 export default function AddTripForm({ submitFun, cancelFun }) {
@@ -43,24 +45,26 @@ export default function AddTripForm({ submitFun, cancelFun }) {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            {/* <label htmlFor="destination" >destination: </label>
+        <Box>
+            <form onSubmit={handleSubmit}>
+                {/* <label htmlFor="destination" >destination: </label>
             <input type="text" id="destination" value={formData.destination} required onChange={(e) => setFormData({ ...formData, destination: e.target.value })} />
             <label htmlFor="duration">duration: </label>
             <input type="number" min="1" id="duration" value={formData.duration} required onChange={(e) => setFormData({ ...formData, duration: e.target.value })} />
             <button type="submit">Add</button>
             {invalidInput && <div>Destination is required</div>} */}
-            {inputs.map((input) => (
-                <FormInput
-                    key={input.id}
-                    {...input}
-                    value={formData[input.name]}
-                    onChange={onChange}
-                />
-            ))}
-            <button>Add</button>
-            <button type="button" onClick={cancelFun}>Cancel</button>
+                {inputs.map((input) => (
+                    <FormInput
+                        key={input.id}
+                        {...input}
+                        value={formData[input.name]}
+                        onChange={onChange}
+                    />
+                ))}
+                <button>Add</button>
+                <button type="button" onClick={cancelFun}>Cancel</button>
 
-        </form>
+            </form>
+        </Box>
     )
 }

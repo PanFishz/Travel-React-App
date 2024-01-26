@@ -1,5 +1,6 @@
 import { useState } from "react";
 import FormInput from "./components/FormInput";
+import './components/FormInput.css'
 
 export default function EditNoteForm({ note, submitFun, submitImageFun, afterSubmitFun }) {
     const [formData, setFormData] = useState(note)
@@ -52,7 +53,7 @@ export default function EditNoteForm({ note, submitFun, submitImageFun, afterSub
                     <option value="note">note</option>
                 </select>
                 {formData.category === "image" ?
-                    <div>
+                    <div className="formInput">
                         <input
                             filename={file}
                             onChange={onChangeImage}
@@ -61,7 +62,7 @@ export default function EditNoteForm({ note, submitFun, submitImageFun, afterSub
                             required
                         ></input>
                     </div> :
-                    <FormInput {...input} value={formData[input.name]} onChange={onChange} />
+                    <FormInput {...input} value={formData[input.name]} onChange={onChange} formType="textarea" />
                 }
                 <button type='submit'>Submit</button>
                 <button type="button" onClick={afterSubmitFun}>Cancel</button>

@@ -5,9 +5,16 @@ import AddTripForm from './AddTripForm';
 import TripItinerary from "./TripItinerary";
 import './TripList.css'
 import './TripItinerary.css'
+import NavBar from './components/NavBar';
+import SingleTripInMenu from './components/SingleTripInMenu';
+import AddIcon from '@mui/icons-material/Add';
 
 
-export default function TripList() {
+import Box from '@mui/material/Box';
+
+
+
+export default function TripList({ isMobile }) {
     const [trips, setTrips] = useState([]);
     const [addTripFormVisible, setAddTripFormVisible] = useState(false)
     const [focusedTrip, setFocusedTrip] = useState("")
@@ -22,9 +29,11 @@ export default function TripList() {
 
     const addATrip = async (trip) => {
         axios.post('http://localhost:3001/trips', trip)
-            .then(function (response) {
-                console.log(response);
-            })
+            .then(trip => {
+                setDisplayingTrip(trip.data);
+                setFocusedTrip(trip.data._id)
+            }
+            )
             .catch(function (error) {
                 console.log(error);
             });
@@ -69,17 +78,72 @@ export default function TripList() {
             });
     }
 
-    return (<div className="TripList">
-        <div className="TripItinerary">
-            {!addTripFormVisible && <button onClick={() => setAddTripFormVisible(true)}>Add a Trip</button>}
-            {addTripFormVisible && <div><AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} /></div>}
-            {trips.map(trip => {
-                return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} />
-            })}
-        </div>
+    const getTripList = () => {
+        return (
+            <>
+                {trips.map(trip => {
+                    return <SingleTripInMenu trip={trip} key={trip._id} selectFun={focusATrip} />
+                })}
+            </>
 
-        {focusedTrip !== "" && <div className="TripItinerary"><TripItinerary trip={displayingTrip} focusATrip={focusATrip} focusedTrip={focusedTrip} /></div>}
-    </div>)
+        )
+    }
+
+    const cancelAddTrip = () => {
+        setAddTripFormVisible(false)
+    }
+
+
+    return (
+        <Box>
+
+            <NavBar
+                addATrip={() => setAddTripFormVisible(true)}
+                getTripList={getTripList}
+                unfocusTrips={() => { setFocusedTrip(""); setDisplayingTrip({}) }}
+                cancelAddTrip={() => setAddTripFormVisible(false)}
+                trip={displayingTrip.destination} />
+
+            {/* {!isMobile && */}
+            {/* maxWidth: { xs: 400, sm: 600, md: 800, lg: 1000, xl: 1300 } */}
+            <Box component="main" sx={{ pt: 5, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
+
+                {!addTripFormVisible && !focusedTrip && <AddIcon onClick={() => setAddTripFormVisible(true)} />}
+                {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
+                {!focusedTrip &&
+                    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
+                        {trips.map(trip => {
+                            return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} cancelAddFun={cancelAddTrip} />
+                        })}
+                    </Box>}
+
+                {focusedTrip !== "" && !addTripFormVisible &&
+
+                    <TripItinerary
+
+                        trip={displayingTrip}
+                        focusATrip={focusATrip}
+                        focusedTrip={focusedTrip}
+                        editDestinationFun={editADest}
+                        deleteFun={deleteATrip}
+                        cancelAddFun={cancelAddTrip} />
+                }
+            </Box>
+            {/* } */}
+
+            {/* {isMobile &&
+                <div className="TripList">
+                    <div className="TripItinerary">
+                        {addTripFormVisible && <div><AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} /></div>}
+                        {trips.map(trip => {
+                            return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} />
+                        })}
+                    </div>
+                    {focusedTrip !== "" && <div className="TripItinerary"><TripItinerary trip={displayingTrip} focusATrip={focusATrip} focusedTrip={focusedTrip} /></div>}
+                </div>
+            } */}
+        </Box>
+    )
 }
 
 // Methods	Urls	Actions

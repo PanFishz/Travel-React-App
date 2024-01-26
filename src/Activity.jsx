@@ -7,9 +7,14 @@ import EditActivityLocationForm from "./EditActivityLocationForm";
 import axios from "axios";
 import AddNoteForm from "./AddNoteForm";
 import Note from "./Note";
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import { rgbToHex } from "@mui/material";
 
 
-export default function Activity({ activity, showActivity }) {
+export default function Activity({ activity, showActivity, deleteActivity }) {
     // const [focusedActivity, setFocusedActivity] = useState(activity)
     const [formTitleVisible, setFormTitleVisible] = useState(false)
     const [formLocationVisible, setFormLocationVisible] = useState(false)
@@ -44,7 +49,7 @@ export default function Activity({ activity, showActivity }) {
             .catch(err => console.log(err))
     }
     const addANote = (note) => {
-        console.log("Note:    ", note, activity._id)
+        console.log("Note:", note, activity._id)
         axios.post(`http://localhost:3001/activities/${activity._id}/note`, {
             id: activity._id, note: note
         })
@@ -146,19 +151,53 @@ export default function Activity({ activity, showActivity }) {
     }
 
     return (
-        <div>
-            {!formTitleVisible && <h2>{activity.title} <EditIcon onClick={() => { setFormTitleVisible(true) }} /></h2>}
-            {formTitleVisible && <EditActivityTitleForm title={activity.title} submitFun={editTitle} cancelFun={cancelEditTitle} />}
-            {!formLocationVisible && <h4><a href={locationQueryString} target="_blank">{activity.location}</a> <EditIcon onClick={() => { setFormLocationVisible(true) }} /></h4>}
-            {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} cancelFun={cancelEditLocation} />}
-            <div>
-                Notes: {activity.notes.map(note => {
-                    return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} />
-                })}
-                {!formAddNoteVisible && <AddIcon onClick={() => { setFormAddNoteVisible(true) }} />}
-                {formAddNoteVisible && <AddNoteForm submitFun={addANote} submitImageFun={addAnImage} cancelFun={cancelAddNote} />}
+        <Box>
+            {!formTitleVisible &&
+                <Typography variant="h5" component={'div'} sx={{ fontWeight: 'bold', color: 'secondary.main', textShadow: ' 2px 2px 4px grey' }}>
+                    {activity.title}
 
-            </div>
-        </div>
+                    <Tooltip title="Edit this activity">
+                        <IconButton onClick={() => { setFormTitleVisible(true) }}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Delete this activity">
+                        <IconButton onClick={deleteActivity}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Typography>
+            }
+            {formTitleVisible && <EditActivityTitleForm title={activity.title} submitFun={editTitle} cancelFun={cancelEditTitle} />}
+            {!formLocationVisible &&
+                <Typography variant="h6" component={'div'}>
+                    <a href={locationQueryString} target="_blank">
+                        {activity.location}
+                    </a>
+                    <Tooltip title="Edit this activity">
+                        <IconButton onClick={() => { setFormLocationVisible(true) }}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                </Typography>}
+            {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} cancelFun={cancelEditLocation} />}
+            <Box>
+                <Typography sx={{ color: 'grey' }} component='div'>Notes:
+                    {!formAddNoteVisible &&
+                        <Tooltip title="Add a note">
+                            <IconButton onClick={() => { setFormAddNoteVisible(true) }}>
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>}
+                    {formAddNoteVisible && <AddNoteForm submitFun={addANote} submitImageFun={addAnImage} cancelFun={cancelAddNote} />}
+                    {activity.notes.map(note => {
+                        return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} />
+                    })}
+                </Typography>
+
+            </Box>
+        </Box>
     )
 }
