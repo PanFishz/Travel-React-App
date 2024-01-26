@@ -1,0 +1,15 @@
+.Trip {
+    border: 2px solid black;
+    padding: 10px;
+    margin: 10px;
+    max-width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+
+}
+
+.Trip div {
+    cursor: pointer;
+}
