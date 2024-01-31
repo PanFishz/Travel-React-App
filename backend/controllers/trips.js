@@ -2,24 +2,34 @@ const TripModel = require('../models/Trip')
 const DayModel = require('../models/Day')
 const ActivityModel = require('../models/Activity');
 const NoteModel = require('../models/Note');
-const { cloudinary } = require('../cloudinary')
+const { cloudinary } = require('../cloudinary');
+const UserModel = require('../models/User');
 
 module.exports.addATrip = async (req, res) => {
-    const newTrip = new TripModel(req.body);
-    const numDays = req.body.duration;
+    const { id, trip } = req.body
+    const newTrip = new TripModel(trip);
+    const numDays = req.body.trip.duration;
     for (let i = 1; i <= numDays; i++) {
         const day = new DayModel({ day: i, activities: [] })
         await day.save();
-        newTrip.days.push(day);
+        await newTrip.days.push(day);
     }
     const result = newTrip.save();
+    const user = await UserModel.findById(id)
+    user.trips.push(newTrip)
+    await user.save()
     res.json(newTrip)
 }
 
 module.exports.getAllTrips = async (req, res) => {
-    await TripModel.find()
-        .then(trips => res.json(trips))
+    // await TripModel.find()
+    //     .then(trips => res.json(trips))
+    //     .catch(err => res.json(err))
+    const { id } = req.query
+    await UserModel.findById(id).populate({ path: 'trips', populate: { path: 'days', populate: { path: 'activities', populate: { path: 'notes' } } } })
+        .then(trips => { res.json(trips) })
         .catch(err => res.json(err))
+
 }
 
 module.exports.getOneTrip = async (req, res) => {
@@ -30,8 +40,13 @@ module.exports.getOneTrip = async (req, res) => {
 }
 
 module.exports.deleteATrip = async (req, res) => {
-    const { id } = req.query;
+    const { id, userId } = req.query;
     const trip = await TripModel.findById(id).populate({ path: 'days', populate: { path: 'activities', populate: { path: 'notes' } } })
+    const user = await UserModel.findById(userId)
+    console.log('1', user, id)
+    await user.trips.pull({ _id: id })
+    console.log('2', user, id)
+    await user.save()
     trip.days.map(async (day) => {
         day.activities.map(async (activity) => {
             activity.notes.map(async (note) => {
@@ -79,10 +94,8 @@ module.exports.deleteADayFromTrip = async (req, res) => {
     trip = await trip.populate('days')
     let dayindex = 0
     trip.days.map(async (day) => {
-
         dayindex++;
         await DayModel.findByIdAndUpdate({ _id: day._id }, { day: dayindex })
-
     })
     await trip.save()
     res.json(trip)
@@ -90,8 +103,14 @@ module.exports.deleteADayFromTrip = async (req, res) => {
 
 module.exports.editDestination = async (req, res) => {
     const { id, destination } = req.body;
-    const trip = await TripModel.findByIdAndUpdate({ _id: id }, { destination })
-    TripModel.find()
-        .then(trips => res.json({ trips, trip }))
+    await TripModel.findByIdAndUpdate({ _id: id }, { destination })
+        .then(trip => {
+            console.log(trip)
+            res.json({ trip })
+        })
         .catch(err => res.json(err))
+    // TripModel.find()
+    //     .then(trips => res.json({ trips, trip }))
+    //     .catch(err => res.json(err))
 }
+

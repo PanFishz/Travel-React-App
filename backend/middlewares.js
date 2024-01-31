@@ -1,9 +1,10 @@
 const { tripSchema, destinationSchema, activitySchema, activityTitleSchema, activityLocationSchema, noteSchema } = require('./yupValidationSchema');
 
 module.exports.validateAddATripForm = (req, res, next) => {
-    const tripData = req.body;
+    const { trip } = req.body;
+    console.log(req.body)
     tripSchema
-        .validate(tripData)
+        .validate(trip)
         .catch(err => {
             res.status(422).send();
             console.log(err.errors);
@@ -15,6 +16,7 @@ module.exports.validateAddATripForm = (req, res, next) => {
             }
         });
 };
+
 
 module.exports.validateDestination = (req, res, next) => {
     const destinationData = req.body;

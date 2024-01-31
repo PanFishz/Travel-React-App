@@ -30,18 +30,22 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, editDesti
     };
 
 
+
+
     useEffect(() => {
         setFocusedActivity("")
+
     }, [focusedDay, focusedTrip])
 
     useEffect(() => {
         setFocusedDay("")
+        setTabValue('0')
     }, [focusedTrip])
 
 
-    const addADay = () => {
+    const addADay = async () => {
         const id = trip._id
-        axios.patch(`http://localhost:3001/trips/${id}/duration`, { id })
+        await axios.patch(`http://localhost:3001/trips/${id}/duration`, { id })
             .then(trip => {
                 focusATrip(trip.data._id)
             })
@@ -54,8 +58,8 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, editDesti
         setFocusedActivity(activity)
     }
 
-    const deleteADay = (dayId) => {
-        axios.delete(`http://localhost:3001/trips/${trip._id}/days/${dayId}`, {
+    const deleteADay = async (dayId) => {
+        await axios.delete(`http://localhost:3001/trips/${trip._id}/days/${dayId}`, {
             params: { tripId: trip._id, dayId: dayId }
         })
             .then(trip => {

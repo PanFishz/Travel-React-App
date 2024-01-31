@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import Trip from "./Trip";
 import AddTripForm from './AddTripForm';
@@ -8,9 +8,10 @@ import './TripItinerary.css'
 import NavBar from './components/NavBar';
 import SingleTripInMenu from './components/SingleTripInMenu';
 import AddIcon from '@mui/icons-material/Add';
-
-
+import Authentication from "./Authentication";
 import Box from '@mui/material/Box';
+import AuthContext from "./context/AuthProvider";
+import { useCookies } from 'react-cookie';
 
 
 
@@ -19,16 +20,39 @@ export default function TripList({ isMobile }) {
     const [addTripFormVisible, setAddTripFormVisible] = useState(false)
     const [focusedTrip, setFocusedTrip] = useState("")
     const [displayingTrip, setDisplayingTrip] = useState({})
+    const { auth, setAuth } = useContext(AuthContext)
+    const [cookies, setCookie] = useCookies(['id']);
 
+    const getUserName = async (id) => {
+        await axios.get(`http://localhost:3001/${id}`, { params: { id: cookies.id } })
+            .then(response => {
+                console.log('wweee', response.data);
+                setAuth({ username: response.data.username })
+            })
+            .catch(err => console.log(err))
+    }
 
     useEffect(() => {
-        axios.get('http://localhost:3001/trips')
-            .then(trips => setTrips(trips.data))
-            .catch(err => console.log(err))
-    }, [trips])
+        if (cookies.id !== "") getUserName();
+    }, []);
+
+    useEffect(() => {
+        console.log("user cookie", cookies.id, auth.user, auth.id, auth.username)
+        async function fetchData() {
+            await axios.get('http://localhost:3001/trips', { params: { id: cookies.id } })
+                .then(response => {
+                    console.log('p', response.data.trips);
+                    setTrips(response.data.trips)
+                })
+                .catch(err => console.log(err))
+        }
+        if (cookies.id !== "") fetchData()
+    }, [displayingTrip, focusedTrip, cookies])
+
 
     const addATrip = async (trip) => {
-        axios.post('http://localhost:3001/trips', trip)
+        console.log(trip, auth.id)
+        axios.post('http://localhost:3001/trips', { id: cookies.id, trip: trip })
             .then(trip => {
                 setDisplayingTrip(trip.data);
                 setFocusedTrip(trip.data._id)
@@ -41,11 +65,13 @@ export default function TripList({ isMobile }) {
     }
 
     const deleteATrip = (id) => {
+        console.log(auth.id)
         axios.delete(`http://localhost:3001/trips/${id}`, {
-            params: { id }
+            params: { id: id, userId: cookies.id }
         })
             .then(function (response) {
                 setFocusedTrip("")
+                setDisplayingTrip({});
                 console.log(response);
             })
             .catch(function (error) {
@@ -65,11 +91,13 @@ export default function TripList({ isMobile }) {
             .catch(err => console.log(err))
 
     }
+
     //patch use req.body
     const editADest = (id, destination) => {
         axios.patch(`http://localhost:3001/trips/${id}/destination`, { id, destination })
-            .then(trips => {
-                setTrips(trips.data.trips);
+            .then(trip => {
+                console.log("ll", trip.data.trip)
+                //setTrips(trip.data);
                 focusATrip(id)
             }
             )
@@ -78,10 +106,11 @@ export default function TripList({ isMobile }) {
             });
     }
 
+
     const getTripList = () => {
         return (
             <>
-                {trips.map(trip => {
+                {trips && trips.map(trip => {
                     return <SingleTripInMenu trip={trip} key={trip._id} selectFun={focusATrip} />
                 })}
             </>
@@ -93,55 +122,65 @@ export default function TripList({ isMobile }) {
         setAddTripFormVisible(false)
     }
 
+    const retriveUser = (data) => {
+        setUser(data)
+    }
+
+    const logout = async () => {
+        await axios.get('http://localhost:3001/logout', {})
+            .then(response => {
+                setCookie('id', "");
+                setFocusedTrip("")
+                setDisplayingTrip({});
+                setTrips([])
+                setAuth({})
+            }
+            )
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
 
     return (
         <Box>
 
-            <NavBar
+            {cookies.id === "" && <><Authentication submitFun={retriveUser} setCookie={setCookie} /></>}
+            {cookies.id !== "" && <><NavBar
                 addATrip={() => setAddTripFormVisible(true)}
                 getTripList={getTripList}
                 unfocusTrips={() => { setFocusedTrip(""); setDisplayingTrip({}) }}
                 cancelAddTrip={() => setAddTripFormVisible(false)}
-                trip={displayingTrip.destination} />
+                trip={displayingTrip.destination}
+                logout={logout} />
 
-            {/* {!isMobile && */}
-            {/* maxWidth: { xs: 400, sm: 600, md: 800, lg: 1000, xl: 1300 } */}
-            <Box component="main" sx={{ pt: 5, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
 
-                {!addTripFormVisible && !focusedTrip && <AddIcon onClick={() => setAddTripFormVisible(true)} />}
-                {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
-                {!focusedTrip &&
-                    <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
-                        {trips.map(trip => {
-                            return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} cancelAddFun={cancelAddTrip} />
-                        })}
-                    </Box>}
 
-                {focusedTrip !== "" && !addTripFormVisible &&
+                <Box component="main" sx={{ pt: 5, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
 
-                    <TripItinerary
+                    {!addTripFormVisible && !focusedTrip && (<>{trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
+                    {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
+                    {!focusedTrip &&
+                        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
+                            {trips && trips.map(trip => {
+                                return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} cancelAddFun={cancelAddTrip} />
+                            })}
+                        </Box>}
 
-                        trip={displayingTrip}
-                        focusATrip={focusATrip}
-                        focusedTrip={focusedTrip}
-                        editDestinationFun={editADest}
-                        deleteFun={deleteATrip}
-                        cancelAddFun={cancelAddTrip} />
-                }
-            </Box>
-            {/* } */}
+                    {focusedTrip !== "" && !addTripFormVisible &&
 
-            {/* {isMobile &&
-                <div className="TripList">
-                    <div className="TripItinerary">
-                        {addTripFormVisible && <div><AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} /></div>}
-                        {trips.map(trip => {
-                            return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} />
-                        })}
-                    </div>
-                    {focusedTrip !== "" && <div className="TripItinerary"><TripItinerary trip={displayingTrip} focusATrip={focusATrip} focusedTrip={focusedTrip} /></div>}
-                </div>
-            } */}
+                        <TripItinerary
+
+                            trip={displayingTrip}
+                            focusATrip={focusATrip}
+                            focusedTrip={focusedTrip}
+                            editDestinationFun={editADest}
+                            deleteFun={deleteATrip}
+                            cancelAddFun={cancelAddTrip} />
+                    }
+                </Box></>}
+
+
         </Box>
     )
 }

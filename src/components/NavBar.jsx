@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -10,9 +10,12 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import MenuIcon from '@mui/icons-material/Menu';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import AuthContext from "../context/AuthProvider";
 
 const drawerWidth = 340;
 const navItems = ['About', 'Contact'];
@@ -20,10 +23,11 @@ const navItems = ['About', 'Contact'];
 
 
 function DrawerAppBar(props) {
-    const { window, addATrip, getTripList, unfocusTrips, cancelAddTrip, trip } = props;
+    const { window, addATrip, getTripList, unfocusTrips, cancelAddTrip, trip, logout } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const [tripListOpen, setTripListOpen] = useState(false);
     const [bigTripListOpen, setBigTripListOpen] = useState(false);
+    const { auth } = useContext(AuthContext)
 
     const handleDrawerToggle = () => {
         setTripListOpen(false)
@@ -65,7 +69,7 @@ function DrawerAppBar(props) {
             <List>
                 <ListItem disablePadding>
                     <ListItemButton sx={{ textAlign: 'center' }}>
-                        <ListItemText primary="Trips" onClick={() => setTripListOpen(true)} />
+                        <ListItemText primary={tripListOpen ? <>Trips<KeyboardArrowUpIcon /></> : <>Trips<KeyboardArrowDownIcon /></>} onClick={() => setTripListOpen(!tripListOpen)} />
                     </ListItemButton>
                 </ListItem>
                 {tripListOpen && tripDrawer}
@@ -83,6 +87,13 @@ function DrawerAppBar(props) {
                         </ListItemButton>
                     </ListItem>
                 ))}
+                <ListItem disablePadding onClick={handleDrawerToggle}>
+                    <ListItemButton sx={{ textAlign: 'center' }} onClick={logout}>
+                        <ListItemText primary={<>{auth.username}/Logout</>} />
+                    </ListItemButton>
+                </ListItem>
+
+
             </List>
         </Box>
     );
@@ -124,10 +135,14 @@ function DrawerAppBar(props) {
                             +Trip
                         </Button>
                         {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }} >
+                            <Button key={item} sx={{ color: '#fff' }}  >
                                 {item}
                             </Button>
                         ))}
+                        <Button sx={{ color: '#fff' }} onClick={logout}>
+                            {auth.username}/Logout
+                        </Button>
+
                     </Box>
                 </Toolbar>
             </AppBar>
@@ -152,7 +167,7 @@ function DrawerAppBar(props) {
                 container={container}
                 variant="temporary"
                 open={bigTripListOpen}
-                onClose={handleDrawerToggle}
+                onClose={() => setBigTripListOpen(false)}
                 ModalProps={{
                     keepMounted: true, // Better open performance on mobile.
                 }}
