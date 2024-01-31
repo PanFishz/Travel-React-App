@@ -67,8 +67,8 @@ export default function Day({ day, showActivity, deleteDay }) {
         axios.get(`http://localhost:3001/days/${day._id}`, {
             params: { id: day._id }
         })
-            .then(activities => {
-                setActivities(activities.data.activities)
+            .then(act => {
+                if (act.data.activities) setActivities(act.data.activities)
             })
             .catch(err => console.log(err))
     }, [activities])
@@ -131,8 +131,8 @@ export default function Day({ day, showActivity, deleteDay }) {
                 </Typography>
                 {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
 
-                {activities.map((activity, i) => (
-                    <Accordion >
+                {activities && activities.map((activity, i) => (
+                    <Accordion key={i} >
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel-content"
@@ -158,7 +158,7 @@ export default function Day({ day, showActivity, deleteDay }) {
                         onChange={handleChange}
                         aria-label="tabs example"
                     >
-                        {activities.map((activity, i) => (
+                        {activities && activities.map((activity, i) => (
                             <Tab label={activity.title} key={i} {...a11yProps({ i })} />))
                         }
 
@@ -192,7 +192,7 @@ export default function Day({ day, showActivity, deleteDay }) {
                             aria-label="Vertical tabs example"
                             sx={{ borderRight: 1, borderColor: 'divider', maxHeight: { xs: 350, sm: 400, md: 500, lg: 500, xl: 500 } }}
                         >
-                            {activities.map((activity, i) => (
+                            {activities && activities.map((activity, i) => (
                                 <Tab label={activity.title} key={i} {...a11yProps({ i })} />))
                             }
 
@@ -208,7 +208,7 @@ export default function Day({ day, showActivity, deleteDay }) {
                         <Box sx={{ maxWidth: { xs: 350, sm: 400, md: 600, lg: 850, xl: 1000 } }}>
                             {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
 
-                            {activities.map((activity, i) => (
+                            {activities && activities.map((activity, i) => (
                                 <TabPanel value={tabValue} index={i} key={i}>
                                     {/* <Typography component={'span'}> {activity.title} - {activity.location}</Typography> */}
                                     {/* <Tooltip title="Delete this activity">
