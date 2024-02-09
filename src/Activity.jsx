@@ -4,7 +4,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import EditActivityTitleForm from "./EditActivityTitleForm";
 import EditActivityLocationForm from "./EditActivityLocationForm";
-import axios from "axios";
+import axios from './api/axios';
 import AddNoteForm from "./AddNoteForm";
 import Note from "./Note";
 import Box from '@mui/material/Box';
@@ -14,7 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { rgbToHex } from "@mui/material";
 
 
-export default function Activity({ activity, showActivity, deleteActivity }) {
+export default function Activity({ activity, deleteActivity, setUpdated, user }) {
     // const [focusedActivity, setFocusedActivity] = useState(activity)
     const [formTitleVisible, setFormTitleVisible] = useState(false)
     const [formLocationVisible, setFormLocationVisible] = useState(false)
@@ -24,85 +24,83 @@ export default function Activity({ activity, showActivity, deleteActivity }) {
 
 
     const editTitle = (newTitle) => {
-        axios.patch(`http://localhost:3001/activities/${activity._id}/title`, {
+        axios.patch(`/activities/${activity._id}/title`, {
             id: activity._id, title: newTitle
-        })
+        }, { withCredentials: true, })
             .then(activity => {
                 setFormTitleVisible(false);
                 //setFocusedActivity(activity.data)
-                console.log(activity.data, activity)
-                showActivity(activity.data)
+                setUpdated()
             })
             .catch(err => console.log(err))
     }
 
     const editLocation = (newLocation) => {
-        axios.patch(`http://localhost:3001/activities/${activity._id}/location`, {
+        axios.patch(`/activities/${activity._id}/location`, {
             id: activity._id, location: newLocation
-        })
+        }, { withCredentials: true, })
             .then(activity => {
                 setFormLocationVisible(false);
                 //setFocusedActivity(activity.data)
-                console.log(activity.data)
-                showActivity(activity.data)
+                setUpdated()
             })
             .catch(err => console.log(err))
     }
     const addANote = (note) => {
         console.log("Note:", note, activity._id)
-        axios.post(`http://localhost:3001/activities/${activity._id}/note`, {
-            id: activity._id, note: note
-        })
+        axios.post(`/activities/${activity._id}/note`, {
+            id: activity._id, note: note, userId: user
+        }, { withCredentials: true, })
             .then(activity => {
                 setFormAddNoteVisible(false);
                 //setFocusedActivity(activity.data)
-                console.log(activity.data)
-                showActivity(activity.data)
+                setUpdated()
             })
             .catch(err => console.log(err))
     }
 
     const deleteANote = (id) => {
         console.log(id)
-        axios.delete(`http://localhost:3001/activities/${activity._id}/notes/${id}`, {
-            params: { activityId: activity._id, noteId: id }
+        axios.delete(`/activities/${activity._id}/notes/${id}`, {
+            params: { activityId: activity._id, noteId: id },
+            withCredentials: true,
         })
             .then(activity => {
                 setFormAddNoteVisible(false);
                 //setFocusedActivity(activity.data)
-                console.log(activity.data)
-                showActivity(activity.data)
+                setUpdated()
             })
             .catch(err => console.log(err))
     }
 
     const editANote = (id, newNote, filename) => {
         console.log(id, newNote)
-        axios.patch(`http://localhost:3001/activities/${activity._id}/notes/${id}`, {
+        axios.patch(`/activities/${activity._id}/notes/${id}`, {
             activityId: activity._id, noteId: id, note: newNote, filename: filename
-        })
+        }, { withCredentials: true, })
             .then(activity => {
                 setFormAddNoteVisible(false);
                 //setFocusedActivity(activity.data)
-                console.log(activity.data)
-                showActivity(activity.data)
+                setUpdated()
             })
             .catch(err => console.log(err))
     }
 
     const addAnImage = (formData) => {
         console.log(formData)
-        axios.post(`http://localhost:3001/activities/${activity._id}/images`,
+        axios.post(`/activities/${activity._id}/images`,
             formData,
             {
                 formSerializer: {
                     indexes: null,
                 },
                 headers:
-                    { "Content-type": "multipart/form-data" }
+                    { "Content-type": "multipart/form-data" },
+                withCredentials: true,
             }).then(res => {
                 console.log(res.data);
                 addANote(res.data)
+
             })
             .catch(err => {
                 console.log(err);
@@ -110,28 +108,18 @@ export default function Activity({ activity, showActivity, deleteActivity }) {
     }
     const editAnImage = (id, formData, filename) => {
         console.log(formData)
-        axios.post(`http://localhost:3001/activities/${activity._id}/images`,
+        axios.post(`/activities/${activity._id}/images`,
             formData,
             {
                 formSerializer: {
                     indexes: null,
                 },
                 headers:
-                    { "Content-type": "multipart/form-data" }
+                    { "Content-type": "multipart/form-data" },
+                withCredentials: true,
             }).then(res => {
                 console.log(res.data);
                 editANote(id, res.data, filename);
-                // if (filename) {
-                //     axios.delete(`http://localhost:3001/images/${filename}`,
-                //         filename)
-                //         .then(res => {
-                //             console.log(res.data);
-                //             addANote(res.data)
-                //         })
-                //         .catch(err => {
-                //             console.log(err);
-                //         })
-                // }
             })
             .catch(err => {
                 console.log(err);

@@ -19,7 +19,8 @@ const NoteSchema = new mongoose.Schema({
     },
     filename: {
         type: String
-    }
+    },
+    author: String
 })
 
 const NoteModel = mongoose.model('Note', NoteSchema)

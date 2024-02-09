@@ -2,7 +2,7 @@ import Day from './Day';
 import { useState, useEffect } from 'react';
 import './Day.css';
 import AddIcon from '@mui/icons-material/Add';
-import axios from 'axios';
+import axios from './api/axios';
 import './TripList.css'
 import Activity from './Activity'
 import Trip from './Trip';
@@ -20,7 +20,7 @@ import '../public/stylesheets/title.css'
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function TripItinerary({ trip, focusATrip, focusedTrip, editDestinationFun, deleteFun, cancelAddFun }) {
+export default function TripItinerary({ trip, focusATrip, focusedTrip, user, editDestinationFun, deleteFun, cancelAddFun }) {
     const [focusedDay, setFocusedDay] = useState("")
     const [focusedActivity, setFocusedActivity] = useState("")
     const [tabValue, setTabValue] = useState('0');
@@ -32,20 +32,20 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, editDesti
 
 
 
-    useEffect(() => {
-        setFocusedActivity("")
+    // useEffect(() => {
+    //     setFocusedActivity("")
 
-    }, [focusedDay, focusedTrip])
+    // }, [focusedDay, focusedTrip])
 
     useEffect(() => {
-        setFocusedDay("")
+        //setFocusedDay("")
         setTabValue('0')
     }, [focusedTrip])
 
 
     const addADay = async () => {
         const id = trip._id
-        await axios.patch(`http://localhost:3001/trips/${id}/duration`, { id })
+        await axios.patch(`/trips/${id}/duration`, { id: id, userId: user }, { withCredentials: true, })
             .then(trip => {
                 focusATrip(trip.data._id)
             })
@@ -54,17 +54,16 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, editDesti
             });
     }
 
-    const showActivity = (activity) => {
-        setFocusedActivity(activity)
-    }
+
 
     const deleteADay = async (dayId) => {
-        await axios.delete(`http://localhost:3001/trips/${trip._id}/days/${dayId}`, {
-            params: { tripId: trip._id, dayId: dayId }
+        await axios.delete(`/trips/${trip._id}/days/${dayId}`, {
+            params: { tripId: trip._id, id: dayId },
+            withCredentials: true,
         })
             .then(trip => {
                 focusATrip(trip.data._id)
-                setFocusedActivity("")
+                //setFocusedActivity("")
                 setTabValue('0')
             })
             .catch(function (error) {
@@ -107,7 +106,7 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, editDesti
                         <TabPanel value="3">Item Three</TabPanel> */}
                     {trip.days.map((day, i) => (
                         <TabPanel value={i.toString()} key={day._id}>
-                            <Day day={day} key={day._id} showActivity={showActivity} deleteDay={deleteADay} />
+                            <Day day={day} key={day._id} user={user} deleteDay={deleteADay} />
                         </TabPanel>
                     ))}
 

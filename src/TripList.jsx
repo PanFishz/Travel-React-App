@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from 'react';
-import axios from 'axios';
+import axios from './api/axios';
 import Trip from "./Trip";
 import AddTripForm from './AddTripForm';
 import TripItinerary from "./TripItinerary";
@@ -14,45 +14,55 @@ import AuthContext from "./context/AuthProvider";
 import { useCookies } from 'react-cookie';
 
 
-
 export default function TripList({ isMobile }) {
     const [trips, setTrips] = useState([]);
     const [addTripFormVisible, setAddTripFormVisible] = useState(false)
     const [focusedTrip, setFocusedTrip] = useState("")
     const [displayingTrip, setDisplayingTrip] = useState({})
     const { auth, setAuth } = useContext(AuthContext)
-    const [cookies, setCookie] = useCookies(['id']);
+    const [cookies, setCookie] = useCookies(['id', 'username']);
 
-    const getUserName = async (id) => {
-        await axios.get(`http://localhost:3001/${id}`, { params: { id: cookies.id } })
-            .then(response => {
-                console.log('wweee', response.data);
-                setAuth({ username: response.data.username })
-            })
-            .catch(err => console.log(err))
-    }
+    //TODO, use seesion to avoid saving sensitive info in cookies
+    // useEffect(() => {
+    //     async function getUser() {
+    //         await axios.get('/user', { withCredentials: true })
+    //             .then(response => {
+    //                 console.log(response)
+    //                 setAuth({ id: response.data._id, username: response.data.username })
+    //             })
+    //             .catch(err => console.log(err))
+    //     }
+    //     getUser();
+    //     console.log("auth3", auth)
+
+    // }, [])
 
     useEffect(() => {
-        if (cookies.id !== "") getUserName();
-    }, []);
-
-    useEffect(() => {
-        console.log("user cookie", cookies.id, auth.user, auth.id, auth.username)
         async function fetchData() {
-            await axios.get('http://localhost:3001/trips', { params: { id: cookies.id } })
+            // await axios.get('/trips', { withCredentials: true, })
+            await axios({
+                method: "get",
+                url: '/trips',
+                withCredentials: true,
+                params: {
+                    id: cookies.id,
+                },
+            })
                 .then(response => {
-                    console.log('p', response.data.trips);
                     setTrips(response.data.trips)
                 })
                 .catch(err => console.log(err))
         }
-        if (cookies.id !== "") fetchData()
+        if (cookies.id !== "") {
+            fetchData();
+            setAuth({ id: cookies.id, username: cookies.username })
+        }
     }, [displayingTrip, focusedTrip, cookies])
 
 
+
     const addATrip = async (trip) => {
-        console.log(trip, auth.id)
-        axios.post('http://localhost:3001/trips', { id: cookies.id, trip: trip })
+        axios.post('/trips', { id: cookies.id, trip: trip }, { withCredentials: true, })
             .then(trip => {
                 setDisplayingTrip(trip.data);
                 setFocusedTrip(trip.data._id)
@@ -65,14 +75,13 @@ export default function TripList({ isMobile }) {
     }
 
     const deleteATrip = (id) => {
-        console.log(auth.id)
-        axios.delete(`http://localhost:3001/trips/${id}`, {
-            params: { id: id, userId: cookies.id }
+        axios.delete(`/trips/${id}`, {
+            params: { id: id, userId: cookies.id },
+            withCredentials: true,
         })
             .then(function (response) {
                 setFocusedTrip("")
                 setDisplayingTrip({});
-                console.log(response);
             })
             .catch(function (error) {
                 console.log(error);
@@ -81,22 +90,21 @@ export default function TripList({ isMobile }) {
 
     //re-render and focus on a trip on the second column
     const focusATrip = (id) => {
-        axios.get(`http://localhost:3001/trips/${id}`, {
-            params: { id }
+        axios.get(`/trips/${id}`, {
+            params: { id },
+            withCredentials: true,
         })
             .then(trip => {
                 setDisplayingTrip((trip.data));
                 setFocusedTrip(trip.data._id);
             })
             .catch(err => console.log(err))
-
     }
 
     //patch use req.body
     const editADest = (id, destination) => {
-        axios.patch(`http://localhost:3001/trips/${id}/destination`, { id, destination })
+        axios.patch(`/trips/${id}/destination`, { id, destination }, { withCredentials: true, })
             .then(trip => {
-                console.log("ll", trip.data.trip)
                 //setTrips(trip.data);
                 focusATrip(id)
             }
@@ -126,10 +134,12 @@ export default function TripList({ isMobile }) {
         setUser(data)
     }
 
+
     const logout = async () => {
-        await axios.get('http://localhost:3001/logout', {})
+        await axios.get('/logout', { params: { id: cookies.id }, withCredentials: true, })
             .then(response => {
                 setCookie('id', "");
+                setCookie('username', "");
                 setFocusedTrip("")
                 setDisplayingTrip({});
                 setTrips([])
@@ -144,21 +154,21 @@ export default function TripList({ isMobile }) {
 
     return (
         <Box>
-
-            {cookies.id === "" && <><Authentication submitFun={retriveUser} setCookie={setCookie} /></>}
-            {cookies.id !== "" && <><NavBar
+            {/* //TODO use auth instead cookies */}
+            {!cookies.id && <><Authentication setCookie={setCookie} /></>}
+            {cookies.id && <><NavBar
                 addATrip={() => setAddTripFormVisible(true)}
                 getTripList={getTripList}
                 unfocusTrips={() => { setFocusedTrip(""); setDisplayingTrip({}) }}
                 cancelAddTrip={() => setAddTripFormVisible(false)}
                 trip={displayingTrip.destination}
-                logout={logout} />
-
+                logout={logout}
+                user={auth.username} />
 
 
                 <Box component="main" sx={{ pt: 5, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
 
-                    {!addTripFormVisible && !focusedTrip && (<>{trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
+                    {!addTripFormVisible && !focusedTrip && (<>{trips && trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
                     {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
                     {!focusedTrip &&
                         <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
@@ -176,7 +186,8 @@ export default function TripList({ isMobile }) {
                             focusedTrip={focusedTrip}
                             editDestinationFun={editADest}
                             deleteFun={deleteATrip}
-                            cancelAddFun={cancelAddTrip} />
+                            cancelAddFun={cancelAddTrip}
+                            user={cookies.id} />
                     }
                 </Box></>}
 

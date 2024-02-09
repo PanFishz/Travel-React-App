@@ -2,7 +2,7 @@ import './Day.css';
 import AddActivityForm from './AddActivityForm';
 import { useState, useEffect } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import axios from 'axios';
+import axios from './api/axios';
 import DeleteIcon from '@mui/icons-material/Delete';
 import * as React from 'react';
 import PropTypes from 'prop-types';
@@ -54,48 +54,48 @@ function a11yProps(index) {
 
 
 
-export default function Day({ day, showActivity, deleteDay }) {
+export default function Day({ day, deleteDay, user }) {
     const [activityFormVisible, setActivityFormVisible] = useState(false)
     const [activities, setActivities] = useState([]);
     const [tabValue, setTabValue] = useState(0);
+    const [updated, setUpdated] = useState(false)
 
     const handleChange = (event, newValue) => {
         setTabValue(newValue);
     };
 
     useEffect(() => {
-        axios.get(`http://localhost:3001/days/${day._id}`, {
-            params: { id: day._id }
+        axios.get(`/days/${day._id}`, {
+            params: { id: day._id },
+            withCredentials: true,
         })
             .then(act => {
                 if (act.data.activities) setActivities(act.data.activities)
             })
             .catch(err => console.log(err))
-    }, [activities])
+    }, [updated])
 
     const deleteAnActivity = (id) => {
-        axios.delete(`http://localhost:3001/days/${day._id}/activities/${id}`, {
-            params: { dayId: day._id, activityId: id }
+        axios.delete(`/days/${day._id}/activities/${id}`, {
+            params: { dayId: day._id, id: id }, withCredentials: true,
         })
             .then(
                 activities => {
                     setActivities(activities.data.activities)
-                    showActivity("")
                     setTabValue(0)
                 })
             .catch(err => console.log(err))
     }
 
     const addAnActivity = (id, activity) => {
-        console.log(id, activity);
-        axios.post('http://localhost:3001/days/${id}/addAnActivity', activity, {
-            params: {
-                id
-            }
-        })
+        axios.post(`/days/${id}/addAnActivity`, { id, activity, userId: user }
+            // activity, {
+            //     params: {
+            //         id
+            //     }}
+            , { withCredentials: true, })
             .then(response => {
                 setActivities(response.data.day.activities)
-                showActivity(response.data.activity)
             })
             .catch(function (error) {
                 console.log(error);
@@ -141,7 +141,7 @@ export default function Day({ day, showActivity, deleteDay }) {
                             {activity.title} - {activity.location}
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Activity activity={activity} showActivity={showActivity} deleteActivity={() => deleteAnActivity(activity._id)} />
+                            <Activity activity={activity} deleteActivity={() => deleteAnActivity(activity._id)} />
 
                         </AccordionDetails>
                     </Accordion>
@@ -216,7 +216,7 @@ export default function Day({ day, showActivity, deleteDay }) {
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip> */}
-                                    <Activity activity={activity} showActivity={showActivity} deleteActivity={() => deleteAnActivity(activity._id)} />
+                                    <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} />
                                 </TabPanel>
                             ))}
                         </Box>

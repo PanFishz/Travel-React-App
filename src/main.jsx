@@ -4,16 +4,24 @@ import App from './App.jsx'
 import './index.css'
 import { AuthProvider } from './context/AuthProvider';
 import { CookiesProvider } from 'react-cookie';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <CookiesProvider defaultSetOptions={{ path: '/' }}>
-        <App />
-      </CookiesProvider>
+  // <React.StrictMode>
+  //   <BrowserRouter>
+  //     <AuthProvider>
+  //       <Routes>
+  //         <Route path="/*" element={<App />} />
+  //       </Routes>
+  //     </AuthProvider>
+  //   </BrowserRouter>
+  <AuthProvider>
+    <CookiesProvider defaultSetOptions={{ path: '/' }}>
+      <App />
+    </CookiesProvider>
 
-    </AuthProvider>
-  </React.StrictMode>,
+  </AuthProvider>
+  //</React.StrictMode>,
 )
