@@ -3,12 +3,12 @@ const NoteModel = require('../models/Note');
 const { cloudinary } = require('../cloudinary')
 
 module.exports.addANote = async (req, res) => {
-    const { id, note } = req.body;
+    const { id, note, userId } = req.body;
     const activity = await ActivityModel.findById(id)
     const newNote = new NoteModel(note)
 
     //const images = req.files.map(f => ({ url: f.path, filename: f.filename }))
-    console.log("newNote", newNote)
+    newNote.author = userId
     await newNote.save()
     activity.notes.push(newNote)
     await activity.save()

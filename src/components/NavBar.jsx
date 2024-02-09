@@ -23,7 +23,7 @@ const navItems = ['About', 'Contact'];
 
 
 function DrawerAppBar(props) {
-    const { window, addATrip, getTripList, unfocusTrips, cancelAddTrip, trip, logout } = props;
+    const { window, addATrip, getTripList, unfocusTrips, cancelAddTrip, trip, logout, user } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const [tripListOpen, setTripListOpen] = useState(false);
     const [bigTripListOpen, setBigTripListOpen] = useState(false);
@@ -89,7 +89,7 @@ function DrawerAppBar(props) {
                 ))}
                 <ListItem disablePadding onClick={handleDrawerToggle}>
                     <ListItemButton sx={{ textAlign: 'center' }} onClick={logout}>
-                        <ListItemText primary={<>{auth.username}/Logout</>} />
+                        <ListItemText primary={<>{user}/Logout</>} />
                     </ListItemButton>
                 </ListItem>
 
@@ -140,7 +140,7 @@ function DrawerAppBar(props) {
                             </Button>
                         ))}
                         <Button sx={{ color: '#fff' }} onClick={logout}>
-                            {auth.username}/Logout
+                            {user}/Logout
                         </Button>
 
                     </Box>

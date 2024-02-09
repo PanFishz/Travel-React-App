@@ -10,22 +10,24 @@ const { storage } = require('../cloudinary')
 const multer = require('multer');
 const upload = multer({ storage });
 //const upload = multer({ dest: 'uploads/' });
+const { isLoggedIn, isActivityAuthor, isNoteAuthor } = require('../middlewares.js')
 
-router.post(`/:id/note`, middlewares.validateNote, activities.addANote)
 
-router.patch('/:id/title', middlewares.validateActivityTitle, activities.editTitleOfActivity)
+router.post(`/:id/note`, isLoggedIn, isActivityAuthor, middlewares.validateNote, activities.addANote)
 
-router.patch('/:id/location', middlewares.validateActivityLocation, activities.editLocationOfActivity)
+router.patch('/:id/title', isLoggedIn, isActivityAuthor, middlewares.validateActivityTitle, activities.editTitleOfActivity)
 
-router.patch('/:activityId/notes/:noteid', middlewares.validateNote, activities.editANote)
+router.patch('/:id/location', isLoggedIn, isActivityAuthor, middlewares.validateActivityLocation, activities.editLocationOfActivity)
+
+router.patch('/:activityId/notes/:noteid', isLoggedIn, isNoteAuthor, middlewares.validateNote, activities.editANote)
 
 //delete a note
-router.delete('/:activityId/notes/:id', activities.deleteANote)
+router.delete('/:activityId/notes/:id', isLoggedIn, isNoteAuthor, activities.deleteANote)
 
 //router.delete('/images/:filename', deleteAnImage)
 
 //upload.single() matches req.file; uload.array() matches req.files
-router.post('/:id/images', upload.single('file'), activities.getImageUrl)
+router.post('/:id/images', isLoggedIn, upload.single('file'), activities.getImageUrl)
 
 
 

@@ -12,7 +12,8 @@ const ActivitySchema = new mongoose.Schema({
     notes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Note'
-    }]
+    }],
+    author: String
 })
 
 const ActivityModel = mongoose.model("Activity", ActivitySchema);

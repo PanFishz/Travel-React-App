@@ -2,23 +2,24 @@ const express = require('express')
 const router = express.Router()
 const { validateAddATripForm, validateDestination } = require('../middlewares')
 const { getAllTrips, getOneTrip, addATrip, editDestination, addADayToTrip, deleteATrip, deleteADayFromTrip } = require('../controllers/trips.js')
+const { isLoggedIn, isTripAuthor, isUser, isDayAuthor } = require('../middlewares.js')
 
 
-router.get('/', getAllTrips)
+router.get('/', isLoggedIn, isUser, getAllTrips)
 
-router.get('/:id', getOneTrip)
+router.get('/:id', isLoggedIn, isTripAuthor, getOneTrip)
 
-router.post('/', validateAddATripForm, addATrip)
+router.post('/', isLoggedIn, validateAddATripForm, addATrip)
 
 //patch use req.body
-router.patch('/:id/destination', validateDestination, editDestination)
+router.patch('/:id/destination', isLoggedIn, isTripAuthor, validateDestination, editDestination)
 
-router.patch('/:id/duration', addADayToTrip)
+router.patch('/:id/duration', isLoggedIn, isTripAuthor, addADayToTrip)
 
 //delete a trip
-router.delete('/:id', deleteATrip)
+router.delete('/:id', isLoggedIn, isTripAuthor, deleteATrip)
 
 //delete a day 
-router.delete('/:tripId/days/:dayId', deleteADayFromTrip)
+router.delete('/:tripId/days/:dayId', isLoggedIn, isDayAuthor, deleteADayFromTrip)
 
 module.exports = router;

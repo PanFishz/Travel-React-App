@@ -10,7 +10,7 @@ module.exports.addATrip = async (req, res) => {
     const newTrip = new TripModel(trip);
     const numDays = req.body.trip.duration;
     for (let i = 1; i <= numDays; i++) {
-        const day = new DayModel({ day: i, activities: [] })
+        const day = new DayModel({ day: i, activities: [], author: id })
         await day.save();
         await newTrip.days.push(day);
     }
@@ -43,9 +43,7 @@ module.exports.deleteATrip = async (req, res) => {
     const { id, userId } = req.query;
     const trip = await TripModel.findById(id).populate({ path: 'days', populate: { path: 'activities', populate: { path: 'notes' } } })
     const user = await UserModel.findById(userId)
-    console.log('1', user, id)
     await user.trips.pull({ _id: id })
-    console.log('2', user, id)
     await user.save()
     trip.days.map(async (day) => {
         day.activities.map(async (activity) => {
@@ -65,9 +63,9 @@ module.exports.deleteATrip = async (req, res) => {
 }
 
 module.exports.addADayToTrip = async (req, res) => {
-    const { id } = req.body;
+    const { id, userId } = req.body;
     const trip = await TripModel.findByIdAndUpdate({ _id: id }, { $inc: { duration: 1 } })
-    const newDay = new DayModel({ day: trip.duration + 1, activities: [] })
+    const newDay = new DayModel({ day: trip.duration + 1, activities: [], author: userId })
     trip.days.push(newDay)
     await newDay.save();
     await trip.save();
@@ -75,10 +73,10 @@ module.exports.addADayToTrip = async (req, res) => {
 }
 
 module.exports.deleteADayFromTrip = async (req, res) => {
-    const { tripId, dayId } = req.query;
+    const { tripId, id } = req.query;
     let trip = await TripModel.findByIdAndUpdate({ _id: tripId }, { $inc: { duration: -1 } })
-    await trip.days.pull({ _id: dayId })
-    const day = await DayModel.findById(dayId).populate({ path: 'activities', populate: { path: 'notes' } })
+    await trip.days.pull({ _id: id })
+    const day = await DayModel.findById(id).populate({ path: 'activities', populate: { path: 'notes' } })
     day.activities.map(async (activity) => {
         activity.notes.map(async (note) => {
             const deletedNote = await NoteModel.findByIdAndDelete(note._id)
@@ -89,7 +87,7 @@ module.exports.deleteADayFromTrip = async (req, res) => {
         })
         await ActivityModel.findByIdAndDelete(activity._id)
     })
-    await DayModel.findByIdAndDelete(dayId)
+    await DayModel.findByIdAndDelete(id)
     await trip.save()
     trip = await trip.populate('days')
     let dayindex = 0
@@ -105,7 +103,6 @@ module.exports.editDestination = async (req, res) => {
     const { id, destination } = req.body;
     await TripModel.findByIdAndUpdate({ _id: id }, { destination })
         .then(trip => {
-            console.log(trip)
             res.json({ trip })
         })
         .catch(err => res.json(err))
