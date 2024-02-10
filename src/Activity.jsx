@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -14,11 +14,16 @@ import Tooltip from '@mui/material/Tooltip';
 import { rgbToHex } from "@mui/material";
 
 
-export default function Activity({ activity, deleteActivity, setUpdated, user }) {
+export default function Activity({ activity, deleteActivity, setUpdated, user, setMessage }) {
     // const [focusedActivity, setFocusedActivity] = useState(activity)
     const [formTitleVisible, setFormTitleVisible] = useState(false)
     const [formLocationVisible, setFormLocationVisible] = useState(false)
     const [formAddNoteVisible, setFormAddNoteVisible] = useState(false)
+
+    useEffect(() => {
+        setMessage('')
+    }, [formTitleVisible, formLocationVisible, formAddNoteVisible])
+
     //https://www.google.com/search?q=louvre+museum
     const locationQueryString = "https://www.google.com/search?q=" + activity.location.replace(/\s+/g, '+')
 
@@ -181,7 +186,7 @@ export default function Activity({ activity, deleteActivity, setUpdated, user })
                         </Tooltip>}
                     {formAddNoteVisible && <AddNoteForm submitFun={addANote} submitImageFun={addAnImage} cancelFun={cancelAddNote} />}
                     {activity.notes.map(note => {
-                        return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} />
+                        return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} setMessage={setMessage} />
                     })}
                 </Typography>
 

@@ -2,6 +2,7 @@ const DayModel = require('./models/Day')
 const UserModel = require('./models/User');
 const ActivityModel = require('./models/Activity')
 const NoteModel = require('./models/Note')
+const TripModel = require('./models/Trip')
 const { tripSchema, destinationSchema, activitySchema, activityTitleSchema, activityLocationSchema, noteSchema } = require('./yupValidationSchema');
 
 module.exports.validateAddATripForm = (req, res, next) => {
@@ -141,8 +142,20 @@ module.exports.isDayAuthor = async (req, res, next) => {
         id = req.body.id;
     }
     const day = await DayModel.findById(id);
-    if (day.author !== (req.user._id).toString()) {
+    if ((!day?.author) || ((day?.author !== null) && day?.author !== (req.user._id).toString())) {
         return res.status(401).json('Not Logged In/ Unauthorized')
+    }
+    next();
+}
+
+module.exports.isMinDuration = async (req, res, next) => {
+    const { tripId } = req.query;
+    const trip = await TripModel.findById(tripId);
+    if ((trip?.duration <= 1)) {
+        //return res.status(401).json('Trip duration must be at least 1 day')
+        return res.status(400).json({
+            message: 'Trip duration must be at least 1 day'
+        });
     }
     next();
 }
@@ -155,7 +168,7 @@ module.exports.isActivityAuthor = async (req, res, next) => {
         id = req.body.id;
     }
     const activity = await ActivityModel.findById(id);
-    if (activity.author !== (req.user._id).toString()) {
+    if (!activity?.author || activity.author !== (req.user._id).toString()) {
         return res.status(401).json('Not Logged In/ Unauthorized')
     }
     next();
@@ -169,6 +182,7 @@ module.exports.isNoteAuthor = async (req, res, next) => {
         id = req.body.noteId;
     }
     const note = await NoteModel.findById(id);
+    console.log("KKKKKKKKKK", note, req.user._id)
     if (note.author !== (req.user._id).toString()) {
         return res.status(401).json('Not Logged In/ Unauthorized')
     }

@@ -20,7 +20,7 @@ import '../public/stylesheets/title.css'
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
-export default function TripItinerary({ trip, focusATrip, focusedTrip, user, editDestinationFun, deleteFun, cancelAddFun }) {
+export default function TripItinerary({ trip, focusATrip, focusedTrip, user, setMessage, editDestinationFun, deleteFun, cancelAddFun }) {
     const [focusedDay, setFocusedDay] = useState("")
     const [focusedActivity, setFocusedActivity] = useState("")
     const [tabValue, setTabValue] = useState('0');
@@ -67,7 +67,8 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, edi
                 setTabValue('0')
             })
             .catch(function (error) {
-                console.log(error);
+                console.log(error.response);
+                setMessage(error.response.data.message)
             });
     }
 
@@ -106,7 +107,7 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, edi
                         <TabPanel value="3">Item Three</TabPanel> */}
                     {trip.days.map((day, i) => (
                         <TabPanel value={i.toString()} key={day._id}>
-                            <Day day={day} key={day._id} user={user} deleteDay={deleteADay} />
+                            <Day day={day} key={day._id} user={user} deleteDay={deleteADay} setMessage={setMessage} />
                         </TabPanel>
                     ))}
 

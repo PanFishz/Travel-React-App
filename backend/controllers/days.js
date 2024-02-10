@@ -12,19 +12,24 @@ module.exports.getADay = async (req, res) => {
 }
 
 module.exports.deleteAnActivityFromDay = async (req, res) => {
-    const { dayId, id } = req.query;
-    const day = await DayModel.findById(dayId)
-    await day.activities.pull({ _id: id })
-    const activity = await ActivityModel.findById(id).populate('notes')
-    activity.notes.map(async (note) => {
-        const deletedNote = await NoteModel.findByIdAndDelete(note._id)
-        if (deletedNote.filename) {
-            await cloudinary.uploader.destroy(deletedNote.filename);
-        }
-    })
-    await ActivityModel.findByIdAndDelete(id)
-    await day.save()
-    res.json(await day.populate({ path: 'activities', populate: { path: 'notes' } }))
+    try {
+        const { dayId, id } = req.query;
+        const day = await DayModel.findById(dayId)
+        await day.activities.pull({ _id: id })
+        const activity = await ActivityModel.findById(id).populate('notes')
+        activity.notes.map(async (note) => {
+            const deletedNote = await NoteModel.findByIdAndDelete(note._id)
+            if (deletedNote.filename) {
+                await cloudinary.uploader.destroy(deletedNote.filename);
+            }
+        })
+        await ActivityModel.findByIdAndDelete(id)
+        await day.save()
+        res.json(await day.populate({ path: 'activities', populate: { path: 'notes' } }))
+    } catch {
+        res.status(403).json("error in deleting an activity")
+    }
+
 }
 
 module.exports.addAnActivityToDay = async (req, res) => {
