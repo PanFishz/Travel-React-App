@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import HomeIcon from '@mui/icons-material/Home';
@@ -14,8 +14,13 @@ import Box from '@mui/material/Box';
 
 
 
-export default function Note({ note, deleteNote, editNote, submitImageFun }) {
+export default function Note({ note, deleteNote, editNote, submitImageFun, setMessage }) {
     const [editNoteFormVisible, setEditNoteFormVisible] = useState(false)
+
+    useEffect(() => {
+        setMessage('')
+    }, [editNoteFormVisible])
+
     let noteType = "";
     let categoryIcon = "";
     switch (note.category) {

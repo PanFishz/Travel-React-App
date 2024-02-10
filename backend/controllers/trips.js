@@ -74,29 +74,35 @@ module.exports.addADayToTrip = async (req, res) => {
 
 module.exports.deleteADayFromTrip = async (req, res) => {
     const { tripId, id } = req.query;
-    let trip = await TripModel.findByIdAndUpdate({ _id: tripId }, { $inc: { duration: -1 } })
-    await trip.days.pull({ _id: id })
-    const day = await DayModel.findById(id).populate({ path: 'activities', populate: { path: 'notes' } })
-    day.activities.map(async (activity) => {
-        activity.notes.map(async (note) => {
-            const deletedNote = await NoteModel.findByIdAndDelete(note._id)
-            if (deletedNote.filename) {
-                await cloudinary.uploader.destroy(deletedNote.filename);
-            }
+    try {
+        let trip = await TripModel.findByIdAndUpdate({ _id: tripId }, { $inc: { duration: -1 } })
+        await trip.days.pull({ _id: id })
+        const day = await DayModel.findById(id).populate({ path: 'activities', populate: { path: 'notes' } })
+        day.activities.map(async (activity) => {
+            activity.notes.map(async (note) => {
+                const deletedNote = await NoteModel.findByIdAndDelete(note._id)
+                if (deletedNote.filename) {
+                    await cloudinary.uploader.destroy(deletedNote.filename);
+                }
 
+            })
+            await ActivityModel.findByIdAndDelete(activity._id)
         })
-        await ActivityModel.findByIdAndDelete(activity._id)
-    })
-    await DayModel.findByIdAndDelete(id)
-    await trip.save()
-    trip = await trip.populate('days')
-    let dayindex = 0
-    trip.days.map(async (day) => {
-        dayindex++;
-        await DayModel.findByIdAndUpdate({ _id: day._id }, { day: dayindex })
-    })
-    await trip.save()
-    res.json(trip)
+        await DayModel.findByIdAndDelete(id)
+        await trip.save()
+        trip = await trip.populate('days')
+        //let dayindex = 0
+        trip.days.map(async (day, i) => {
+            //dayindex++;
+            //console.log("INDEX", i)
+            await DayModel.findByIdAndUpdate({ _id: day._id }, { day: i + 1 })
+        })
+        await trip.save()
+        res.json(trip)
+    } catch {
+        res.status(404).json('error')
+    }
+
 }
 
 module.exports.editDestination = async (req, res) => {

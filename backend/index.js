@@ -8,15 +8,13 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const corsOptions = require('./config/corsOptions');
-const TripModel = require('./models/Trip')
-const DayModel = require('./models/Day')
-const ActivityModel = require('./models/Activity');
-const NoteModel = require('./models/Note');
 const tripsRouter = require('./routers/trips.js')
 const daysRouter = require('./routers/days.js')
 const activitiesRouter = require('./routers/activities.js')
 const userRouter = require('./routers/user.js')
 const { error } = require('./middlewares')
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet')
 //seesion cookie
 const session = require('express-session');
 //MongoDB session store for Connect and Express written in Typescript.
@@ -40,6 +38,42 @@ app.use(express.urlencoded({ extended: false }));
 
 // built-in middleware for json 
 app.use(express.json());
+
+//wont allow '?' and '.' in query/params/body/header key, (reseversed chars by MongoDB as operators)
+//replace '?' and '.' by '_'
+app.use(
+    mongoSanitize({
+        replaceWith: '_',
+    }),
+);
+// secure Express apps by setting HTTP response headers.
+app.use(helmet());
+const scriptSrcUrls = [
+];
+const styleSrcUrls = [
+];
+const connectSrcUrls = [
+];
+const fontSrcUrls = [];
+app.use(
+    helmet.contentSecurityPolicy({
+        directives: {
+            defaultSrc: [],
+            connectSrc: ["'self'", ...connectSrcUrls],
+            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
+            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
+            workerSrc: ["'self'", "blob:"],
+            objectSrc: [],
+            imgSrc: [
+                "'self'",
+                "blob:",
+                "data:",
+                "https://res.cloudinary.com/droagjbtj/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
+            ],
+            fontSrc: ["'self'", ...fontSrcUrls],
+        },
+    })
+);
 
 //middleware for cookies
 //app.use(cookieParser());
@@ -79,12 +113,16 @@ store.on('error', function (e) {
 })
 
 const sessionConfig = {
+    //avoid using default name "coonect.sid" to add another layer of secirity
+    name: 'session',
     store, //same as 'store:store,'
     secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
         httpOnly: true,
+        //use in https
+        //secure: true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
@@ -106,6 +144,7 @@ passport.deserializeUser(UserModel.deserializeUser());
 
 app.use((req, res, next) => {
     //console.log(req.session.returnTo)
+    //console.log(req.query, req.body)
     res.locals.currentUser = req.user;
     next();
 })

@@ -23,7 +23,7 @@ const navItems = ['About', 'Contact'];
 
 
 function DrawerAppBar(props) {
-    const { window, addATrip, getTripList, unfocusTrips, cancelAddTrip, trip, logout, user } = props;
+    const { window, addATrip, getTripList, unfocusTrips, cancelAddTrip, trip, logout, user, setMessage } = props;
     const [mobileOpen, setMobileOpen] = useState(false);
     const [tripListOpen, setTripListOpen] = useState(false);
     const [bigTripListOpen, setBigTripListOpen] = useState(false);
@@ -31,6 +31,7 @@ function DrawerAppBar(props) {
 
     const handleDrawerToggle = () => {
         setTripListOpen(false)
+        setMessage('')
         setMobileOpen((prevState) => !prevState);
     };
 
@@ -128,14 +129,14 @@ function DrawerAppBar(props) {
 
 
                     <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Button sx={{ color: '#fff' }} onClick={() => setBigTripListOpen(true)}>
+                        <Button sx={{ color: '#fff' }} onClick={() => { setBigTripListOpen(true); setMessage('') }}>
                             Trips
                         </Button>
                         <Button sx={{ color: '#fff' }} onClick={addATrip}>
                             +Trip
                         </Button>
                         {navItems.map((item) => (
-                            <Button key={item} sx={{ color: '#fff' }}  >
+                            <Button key={item} sx={{ color: '#fff' }} onClick={() => { setMessage('') }} >
                                 {item}
                             </Button>
                         ))}

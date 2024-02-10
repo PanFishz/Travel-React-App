@@ -54,7 +54,7 @@ function a11yProps(index) {
 
 
 
-export default function Day({ day, deleteDay, user }) {
+export default function Day({ day, deleteDay, user, setMessage }) {
     const [activityFormVisible, setActivityFormVisible] = useState(false)
     const [activities, setActivities] = useState([]);
     const [tabValue, setTabValue] = useState(0);
@@ -63,6 +63,10 @@ export default function Day({ day, deleteDay, user }) {
     const handleChange = (event, newValue) => {
         setTabValue(newValue);
     };
+
+    useEffect(() => {
+        setMessage('')
+    }, [updated, tabValue, activityFormVisible, activities])
 
     useEffect(() => {
         axios.get(`/days/${day._id}`, {
@@ -132,7 +136,7 @@ export default function Day({ day, deleteDay, user }) {
                 {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
 
                 {activities && activities.map((activity, i) => (
-                    <Accordion key={i} >
+                    <Accordion key={i} onClick={() => setMessage('')}>
                         <AccordionSummary
                             expandIcon={<ExpandMoreIcon />}
                             aria-controls="panel-content"
@@ -141,8 +145,8 @@ export default function Day({ day, deleteDay, user }) {
                             {activity.title} - {activity.location}
                         </AccordionSummary>
                         <AccordionDetails>
-                            <Activity activity={activity} deleteActivity={() => deleteAnActivity(activity._id)} />
 
+                            <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} setMessage={setMessage} />
                         </AccordionDetails>
                     </Accordion>
                 ))}
@@ -216,7 +220,7 @@ export default function Day({ day, deleteDay, user }) {
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip> */}
-                                    <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} />
+                                    <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} setMessage={setMessage} />
                                 </TabPanel>
                             ))}
                         </Box>

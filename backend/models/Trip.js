@@ -7,7 +7,8 @@ const TripSchema = new mongoose.Schema({
     },
     duration: {
         type: Number,
-        required: true
+        required: true,
+        min: 1
     },
     days: [{
         type: mongoose.Schema.Types.ObjectId,

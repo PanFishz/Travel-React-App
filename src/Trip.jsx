@@ -10,7 +10,7 @@ import Typography from '@mui/material/Typography';
 
 
 
-export default function Trip({ trip, deleteFun, selectFun, editDestinationFun, cancelAddFun }) {
+export default function Trip({ trip, deleteFun, selectFun, editDestinationFun, cancelAddFun, setMessage }) {
     const [editDestinationForm, setEditDestinationForm] = useState(false)
 
     const handleCleanUp = () => {
@@ -19,7 +19,7 @@ export default function Trip({ trip, deleteFun, selectFun, editDestinationFun, c
     }
 
     return (
-        <Card className="Trip" variant="outlined" key={trip._id}>
+        <Card className="Trip" variant="outlined" key={trip._id} onClick={() => { setMessage('') }} >
             <CardContent >
                 <Typography onClick={() => selectFun(trip._id)} sx={{ fontSize: 22, display: 'inline' }} >
                     {trip.destination}
