@@ -161,6 +161,9 @@ app.use(errorLogger)
 app.use(errorResponder)
 app.use(failSafeHandler)
 
-app.listen(3001, () => {
-    console.log("Port 3001 is listening")
+//define port and listen to it
+const port = process.env.PORT || 3001;
+
+app.listen(port, () => {
+    console.log(`listening on port ${port}..`)
 })
