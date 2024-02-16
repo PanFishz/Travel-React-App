@@ -18,9 +18,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   //     </AuthProvider>
   //   </BrowserRouter>
   <AuthProvider>
-    <CookiesProvider defaultSetOptions={{ path: '/' }}>
-      <App />
-    </CookiesProvider>
+
+    {/* <CookiesProvider defaultSetOptions={{ path: '/' }}> */}
+    <App />
+    {/* </CookiesProvider> */}
 
   </AuthProvider>
   //</React.StrictMode>,

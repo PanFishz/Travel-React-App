@@ -2,7 +2,9 @@ import './App.css'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import TripList from './TripList'
 import { useMediaQuery } from 'react-responsive'
-
+import { useState, useEffect, useContext } from 'react';
+import AuthContext from "./context/AuthProvider";
+import axios from './api/axios';
 
 function App() {
   const isDesktop = useMediaQuery({ query: '(min-width: 1008px)' })
@@ -10,13 +12,40 @@ function App() {
   const isMobile = useMediaQuery({ query: '(max-width: 640px)' })
   const isPortrait = useMediaQuery({ query: '(orientation: portrait)' })
   const isRetina = useMediaQuery({ query: '(min-resolution: 2dppx)' })
+  const { auth, setAuth } = useContext(AuthContext)
 
+
+
+  async function getIsLoggedin() {
+    await axios.get('/user', { withCredentials: true })
+      .then(response => {
+        setAuth({ id: response.data._id, username: response.data.username })
+        console.log("auth in app level", response.data.username)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+  useEffect(() => {
+    getIsLoggedin();
+  }, [])
 
 
   return (
 
     <main className="App">
       <TripList isMobile={isMobile} />
+      {/* <Routes>
+        <Route path='/signin' element={<Authentication isLoggedIn={isLoggedIn} setCookie={setCookie} setisLoggedIn={setisLoggedIn} />} />
+        <Route path='/'
+          element={
+            <Protected isLoggedIn={isLoggedIn}>
+              <TripList isMobile={isMobile} setisLoggedIn={setisLoggedIn} />
+            </Protected>
+          }
+        />
+      </Routes> */}
+
 
     </main>
 

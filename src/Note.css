@@ -1,4 +1,11 @@
 .Note {
-    border: 2px solid black;
+    border: 2px solid rgb(201, 201, 201);
+    border-radius: 5px;
+    box-shadow: 2px 2px 4px grey;
     margin: 3px;
+    padding: 2px;
+}
+
+a {
+    text-decoration: underline;
 }

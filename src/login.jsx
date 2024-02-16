@@ -1,9 +1,13 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import axios from './api/axios';
+import { useNavigate } from "react-router-dom";
+import theme from './components/ColorPalette'
+import { ThemeProvider } from '@emotion/react';
+import Typography from '@mui/material/Typography';
 
 
-const Login = ({ toRegister, setCookie }) => {
+const Login = ({ toRegister }) => {
     const { auth, setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
@@ -11,7 +15,6 @@ const Login = ({ toRegister, setCookie }) => {
     const [user, setUser] = useState('');
     const [pwd, setPwd] = useState('');
     const [errMsg, setErrMsg] = useState('');
-
 
     useEffect(() => {
         userRef.current.focus();
@@ -33,13 +36,11 @@ const Login = ({ toRegister, setCookie }) => {
             );
             const id = response?.data._id
             const username = response?.data.username
-            //console.log((response), response?.data._id);
 
             setAuth({ username, id });
-            setCookie('id', response?.data._id)
-            setCookie('username', response?.data.username)
             setUser('');
             setPwd('');
+
 
         } catch (err) {
             if (!err?.response) {
@@ -56,10 +57,10 @@ const Login = ({ toRegister, setCookie }) => {
     }
 
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <section>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <h1>Sign In</h1>
+                <Typography variant='h3' sx={{ color: 'secondary.main' }}>Sign In</Typography>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">Username:</label>
                     <input
@@ -90,7 +91,7 @@ const Login = ({ toRegister, setCookie }) => {
                     </span>
                 </p>
             </section>
-        </>
+        </ThemeProvider>
     )
 }
 

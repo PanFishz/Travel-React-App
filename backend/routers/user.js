@@ -28,8 +28,9 @@ router.post('/register', user.registrationNewUser)
 
 router.post('/login', passport.authenticate('local', { session: true }), user.loginUser)
 
-router.get('/logout', isLoggedIn, isUser, user.logoutUser)
+// TODO, might want to add back: isLoggedIn, isUser,
+router.get('/logout', user.logoutUser)
 
-router.get('/user', user.getUserName)
+router.get('/user', isLoggedIn, user.getUserName)
 
 module.exports = router

@@ -10,13 +10,13 @@ module.exports.registrationNewUser = async (req, res) => {
         req.login(registeredUser, err => {
             if (err) {
                 console.log(err)
-                return next(err);
+                res.status(301).json("Not signed in")
             };
             res.json(registeredUser)
         })
     } catch (e) {
         console.log(e)
-        res.send('error Either username or email is already in use');
+        res.status(409).json('Error: username is already in use');
     }
 }
 

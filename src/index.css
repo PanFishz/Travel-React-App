@@ -5,23 +5,16 @@
 
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: #ffffff;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 0rem;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
 
-a:hover {
-  color: #535bf2;
-}
 
 body {
   margin: 0;
@@ -43,13 +36,14 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #726771;
+  background-color: #4f4c4e;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 
 button:hover {
-  border-color: #646cff;
+  border-color: #7DCFB6;
+  ;
 }
 
 button:focus,
@@ -64,7 +58,7 @@ button:focus-visible {
   }
 
   a:hover {
-    color: #747bff;
+    color: #7DCFB6;
   }
 
   button {
@@ -125,6 +119,10 @@ a:visited {
   color: #424242;
 }
 
+a:hover {
+  color: #7DCFB6;
+}
+
 input[type="text"],
 input[type="password"],
 button,
@@ -133,7 +131,9 @@ textarea {
   font-size: 22px;
   padding: 0.25rem;
   border-radius: 0.5rem;
+
 }
+
 
 label,
 button {
@@ -147,7 +147,7 @@ button {
 .instructions {
   font-size: 0.75rem;
   border-radius: 0.5rem;
-  background: #000;
+  background: #535353;
   color: #fff;
   padding: 0.25rem;
   position: relative;
@@ -168,12 +168,12 @@ button {
 }
 
 .valid {
-  color: limegreen;
+  color: rgb(1, 82, 1);
   margin-left: 0.25rem;
 }
 
 .invalid {
-  color: red;
+  color: rgb(250, 111, 232);
   margin-left: 0.25rem;
 }
 
@@ -187,4 +187,12 @@ button {
 
 .line {
   display: inline-block;
+  text-decoration: underline;
+}
+
+input[type="text"]:focus,
+input[type="password"]:focus,
+button:focus,
+textarea :focus {
+  outline: orange;
 }

@@ -12,34 +12,24 @@ import AddIcon from '@mui/icons-material/Add';
 import Authentication from "./Authentication";
 import Box from '@mui/material/Box';
 import AuthContext from "./context/AuthProvider";
-import { useCookies } from 'react-cookie';
+//import { useCookies } from 'react-cookie';
 
-export default function TripList({ isMobile }) {
+export default function TripList({ isMobile, setisLoggedIn }) {
     const [trips, setTrips] = useState([]);
     const [addTripFormVisible, setAddTripFormVisible] = useState(false)
     const [focusedTrip, setFocusedTrip] = useState("")
     const [displayingTrip, setDisplayingTrip] = useState({})
     const { auth, setAuth } = useContext(AuthContext)
-    const [cookies, setCookie] = useCookies(['id', 'username']);
+    //const [cookies, setCookie] = useCookies(['id', 'username']);
     const [message, setMessage] = useState('')
 
-    //TODO, use seesion to avoid saving sensitive info in cookies
-    // useEffect(() => {
-    //     async function getUser() {
-    //         await axios.get('/user', { withCredentials: true })
-    //             .then(response => {
-    //                 console.log(response)
-    //                 setAuth({ id: response.data._id, username: response.data.username })
-    //             })
-    //             .catch(err => console.log(err))
-    //     }
-    //     getUser();
-    //     console.log("auth3", auth)
-
-    // }, [])
     useEffect(() => {
         setMessage('')
-    }, [trips, addTripFormVisible, focusedTrip, displayingTrip, auth, cookies])
+    }, [trips, addTripFormVisible, focusedTrip, displayingTrip, auth])
+
+    useEffect(() => {
+        setAddTripFormVisible(false)
+    }, [trips, focusedTrip, displayingTrip, auth])
 
     useEffect(() => {
         async function fetchData() {
@@ -49,7 +39,7 @@ export default function TripList({ isMobile }) {
                 url: '/trips',
                 withCredentials: true,
                 params: {
-                    id: cookies.id,
+                    id: auth.id,
                 },
             })
                 .then(response => {
@@ -57,16 +47,16 @@ export default function TripList({ isMobile }) {
                 })
                 .catch(err => console.log(err))
         }
-        if (cookies.id !== "") {
+        if (auth.id !== "") {
             fetchData();
-            setAuth({ id: cookies.id, username: cookies.username })
+            //setAuth({ id: auth.id, username: auth.username })
         }
-    }, [displayingTrip, focusedTrip, cookies])
+    }, [displayingTrip, focusedTrip, auth])
 
 
 
     const addATrip = async (trip) => {
-        axios.post('/trips', { id: cookies.id, trip: trip }, { withCredentials: true, })
+        axios.post('/trips', { id: auth.id, trip: trip }, { withCredentials: true, })
             .then(trip => {
                 setDisplayingTrip(trip.data);
                 setFocusedTrip(trip.data._id)
@@ -80,7 +70,7 @@ export default function TripList({ isMobile }) {
 
     const deleteATrip = (id) => {
         axios.delete(`/trips/${id}`, {
-            params: { id: id, userId: cookies.id },
+            params: { id: id, userId: auth.id },
             withCredentials: true,
         })
             .then(function (response) {
@@ -99,6 +89,7 @@ export default function TripList({ isMobile }) {
             withCredentials: true,
         })
             .then(trip => {
+
                 setDisplayingTrip((trip.data));
                 setFocusedTrip(trip.data._id);
             })
@@ -140,10 +131,10 @@ export default function TripList({ isMobile }) {
 
 
     const logout = async () => {
-        await axios.get('/logout', { params: { id: cookies.id }, withCredentials: true, })
+        await axios.get('/logout', { params: { id: auth.id }, withCredentials: true, })
             .then(response => {
-                setCookie('id', "");
-                setCookie('username', "");
+                // setCookie('id', "");
+                // setCookie('username', "");
                 setFocusedTrip("")
                 setDisplayingTrip({});
                 setTrips([])
@@ -158,44 +149,46 @@ export default function TripList({ isMobile }) {
 
     return (
         <Box>
-            {/* //TODO use auth instead cookies */}
-            {!cookies.id && <><Authentication setCookie={setCookie} /></>}
-            {cookies.id && <><NavBar
-                addATrip={() => setAddTripFormVisible(true)}
-                getTripList={getTripList}
-                unfocusTrips={() => { setFocusedTrip(""); setDisplayingTrip({}) }}
-                cancelAddTrip={() => setAddTripFormVisible(false)}
-                trip={displayingTrip.destination}
-                logout={logout}
-                user={auth.username}
-                setMessage={setMessage} />
+            {/* //TODO use auth instead cookies */console.log("auth id", auth.id)}
+            {!auth.id && <><Authentication /></>}
+            {auth.id &&
+                <><NavBar
+                    addATrip={() => setAddTripFormVisible(true)}
+                    getTripList={getTripList}
+                    unfocusTrips={() => { setFocusedTrip(""); setDisplayingTrip({}) }}
+                    cancelAddTrip={() => setAddTripFormVisible(false)}
+                    trip={displayingTrip.destination}
+                    logout={logout}
+                    user={auth.username}
+                    setMessage={setMessage} />
 
 
-                <Box component="main" sx={{ pt: 5, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
-                    {message && <Flash message={message} setMessage={setMessage} />}
-                    {!addTripFormVisible && !focusedTrip && (<>{trips && trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
-                    {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
-                    {!focusedTrip &&
-                        <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
-                            {trips && trips.map(trip => {
-                                return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} cancelAddFun={cancelAddTrip} setMessage={setMessage} />
-                            })}
-                        </Box>}
+                    <Box component="main" sx={{ pt: { xs: 2, sm: 5 }, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
+                        {message && <Flash message={message} setMessage={setMessage} />}
+                        {!addTripFormVisible && !focusedTrip && (<>{trips && trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
+                        {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
+                        {!focusedTrip &&
+                            <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
+                                {trips && trips.map(trip => {
+                                    return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} cancelAddFun={cancelAddTrip} setMessage={setMessage} />
+                                })}
+                            </Box>}
 
-                    {focusedTrip !== "" && !addTripFormVisible &&
+                        {focusedTrip !== "" && !addTripFormVisible &&
 
-                        <TripItinerary
+                            <TripItinerary
 
-                            trip={displayingTrip}
-                            focusATrip={focusATrip}
-                            focusedTrip={focusedTrip}
-                            editDestinationFun={editADest}
-                            deleteFun={deleteATrip}
-                            cancelAddFun={cancelAddTrip}
-                            user={cookies.id}
-                            setMessage={setMessage} />
-                    }
-                </Box></>}
+                                trip={displayingTrip}
+                                focusATrip={focusATrip}
+                                focusedTrip={focusedTrip}
+                                editDestinationFun={editADest}
+                                deleteFun={deleteATrip}
+                                cancelAddFun={cancelAddTrip}
+                                user={auth.id}
+                                setMessage={setMessage} />
+                        }
+                    </Box></>
+            }
 
 
         </Box>

@@ -6,12 +6,14 @@ import EditDestinationForm from './EditDestinationForm';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-
+import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 
 
 
 export default function Trip({ trip, deleteFun, selectFun, editDestinationFun, cancelAddFun, setMessage }) {
     const [editDestinationForm, setEditDestinationForm] = useState(false)
+    const [isButtonDisabled, setButtonDisabled] = useState(false);
 
     const handleCleanUp = () => {
         cancelAddFun()
@@ -31,7 +33,15 @@ export default function Trip({ trip, deleteFun, selectFun, editDestinationFun, c
                     <EditDestinationForm submitFun={editDestinationFun} destination={trip.destination} id={trip._id} cleanup={handleCleanUp} />}
 
                 <Typography > {trip.duration} {trip.duration === 1 ? "day" : "days"}</Typography>
-                <DeleteIcon onClick={() => deleteFun(trip._id)} />
+                <Tooltip title="Delete this trip">
+                    <IconButton onClick={() => {
+                        setButtonDisabled(true);
+                        deleteFun(trip._id);
+                    }} disabled={isButtonDisabled} >
+                        <DeleteIcon />
+                    </IconButton>
+                </Tooltip>
+
             </CardContent>
         </Card>)
 }

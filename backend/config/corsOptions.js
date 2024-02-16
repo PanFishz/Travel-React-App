@@ -8,7 +8,7 @@ const corsOptions = {
     //         callback(new Error('Not allowed by CORS'));
     //     }
     // },
-    origin: "http://localhost:5179",
+    origin: "http://localhost:5173",
     optionsSuccessStatus: 200,
     credentials: true,
 
