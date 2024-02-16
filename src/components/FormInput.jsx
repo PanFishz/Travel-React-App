@@ -1,5 +1,5 @@
 import { useState } from "react";
-import "./formInput.css";
+import "./FormInput.css";
 import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 
 const FormInput = (props) => {
