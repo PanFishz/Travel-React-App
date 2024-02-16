@@ -46,7 +46,7 @@ export default function AddTripForm({ submitFun, cancelFun }) {
 
     return (
         <Box>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} >
                 {/* <label htmlFor="destination" >destination: </label>
             <input type="text" id="destination" value={formData.destination} required onChange={(e) => setFormData({ ...formData, destination: e.target.value })} />
             <label htmlFor="duration">duration: </label>

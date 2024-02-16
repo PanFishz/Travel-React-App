@@ -1,3 +1,4 @@
 .TripItinerary {
-    border: 2px solid black;
+    /* border: 2px solid black; */
+    min-width: 0.8em
 }

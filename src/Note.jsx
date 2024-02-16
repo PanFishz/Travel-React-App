@@ -16,6 +16,7 @@ import Box from '@mui/material/Box';
 
 export default function Note({ note, deleteNote, editNote, submitImageFun, setMessage }) {
     const [editNoteFormVisible, setEditNoteFormVisible] = useState(false)
+    const [isButtonDisabled, setButtonDisabled] = useState(false);
 
     useEffect(() => {
         setMessage('')
@@ -26,7 +27,7 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
     switch (note.category) {
         case 'url':
             categoryIcon = <LinkIcon />
-            noteType = <a href={note.content} target="_blank">{note.content}</a>;
+            noteType = <a href={note.content} target="_blank" >{note.content}</a>;
             break;
         case 'image':
             categoryIcon = <ImageIcon />
@@ -41,7 +42,7 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
             categoryIcon = <HomeIcon />
             //https://www.google.com/maps/place/11037+Ohio+Ave,+Los+Angeles,+CA+90025/
             const addressString = "https://www.google.com/maps/place/" + note.content.replace(/\s+/g, '+')
-            noteType = <a href={addressString} target="_blank">address: {note.content}</a>;
+            noteType = <a href={addressString} target="_blank" sx={{ textDecoration: 'underline' }}>address: {note.content}</a>;
             break;
         case 'note':
             categoryIcon = <NotesIcon />
@@ -63,7 +64,11 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
                         </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete this note">
-                        <IconButton onClick={deleteNote}>
+                        <IconButton onClick={() => {
+                            setButtonDisabled(true);
+                            deleteNote();
+                        }}
+                            disabled={isButtonDisabled}>
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>

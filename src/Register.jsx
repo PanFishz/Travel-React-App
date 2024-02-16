@@ -3,12 +3,15 @@ import AuthContext from "./context/AuthProvider";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from './api/axios';
+import theme from './components/ColorPalette'
+import { ThemeProvider } from '@emotion/react';
+import Typography from '@mui/material/Typography';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 
-const Register = ({ toLogin, setCookie }) => {
+const Register = ({ toLogin }) => {
     const { setAuth, auth } = useContext(AuthContext);
 
     const userRef = useRef();
@@ -27,7 +30,7 @@ const Register = ({ toLogin, setCookie }) => {
     const [matchFocus, setMatchFocus] = useState(false);
 
     const [errMsg, setErrMsg] = useState('');
-    const [success, setSuccess] = useState(false);
+
 
     useEffect(() => {
         userRef.current.focus();
@@ -66,17 +69,13 @@ const Register = ({ toLogin, setCookie }) => {
             );
             const id = response?.data._id
             const username = response?.data.username
-            //console.log((response), response?.data._id);
-
             setAuth({ username, id });
-            setCookie('id', id)
-            setCookie('username', username)
-
             //clear state and controlled inputs
             setUser('');
             setPwd('');
             setMatchPwd('');
-            setSuccess(true);
+
+
         } catch (err) {
             if (!err?.response) {
                 setErrMsg('No Server Response');
@@ -90,18 +89,10 @@ const Register = ({ toLogin, setCookie }) => {
     }
 
     return (
-        <>
-            {/* {success ? (
-                <section>
-                    <h1>Success!</h1>
-                    <p>
-                        <a href="#">Sign In</a>
-                    </p>
-                </section>
-            ) : ( */}
+        <ThemeProvider theme={theme}>
             <section>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <h1>Register</h1>
+                <Typography variant='h3' sx={{ color: 'secondary.main' }}>Register</Typography>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">
                         Username:
@@ -184,8 +175,7 @@ const Register = ({ toLogin, setCookie }) => {
                     </span>
                 </p>
             </section>
-            {/* )} */}
-        </>
+        </ThemeProvider>
     )
 }
 

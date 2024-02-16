@@ -32,17 +32,21 @@ module.exports.deleteAnActivityFromDay = async (req, res) => {
 
 }
 
-module.exports.addAnActivityToDay = async (req, res) => {
-    const { id, activity, userId } = req.body;
-    const day = await DayModel.findById(id)
-    const act = new ActivityModel(activity)
-    act.author = userId
-    await act.save()
-    day.activities.push(act)
-    await day.save()
-    const response = {
-        day: await day.populate({ path: 'activities', populate: { path: 'notes' } }),
-        activity: act
+module.exports.addAnActivityToDay = async (req, res, next) => {
+    try {
+        const { id, activity, userId } = req.body;
+        const day = await DayModel.findById(id)
+        const act = new ActivityModel(activity)
+        act.author = userId
+        await act.save()
+        day.activities.push(act)
+        await day.save()
+        const response = {
+            day: await day.populate({ path: 'activities', populate: { path: 'notes' } }),
+            activity: act
+        }
+        res.json(response)
+    } catch (err) {
+        next(err)
     }
-    res.json(response)
 }

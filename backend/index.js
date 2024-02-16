@@ -12,7 +12,7 @@ const tripsRouter = require('./routers/trips.js')
 const daysRouter = require('./routers/days.js')
 const activitiesRouter = require('./routers/activities.js')
 const userRouter = require('./routers/user.js')
-const { error } = require('./middlewares')
+const { error, errorLogger, errorResponder, failSafeHandler } = require('./middlewares')
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet')
 //seesion cookie
@@ -142,12 +142,12 @@ passport.deserializeUser(UserModel.deserializeUser());
 
 
 
-app.use((req, res, next) => {
-    //console.log(req.session.returnTo)
-    //console.log(req.query, req.body)
-    res.locals.currentUser = req.user;
-    next();
-})
+// app.use((req, res, next) => {
+//     //console.log(req.session.returnTo)
+//     //console.log(req.query, req.body)
+//     res.locals.currentUser = req.user;
+//     next();
+// })
 
 
 app.use('/trips', tripsRouter);
@@ -155,7 +155,12 @@ app.use('/days', daysRouter);
 app.use('/activities', activitiesRouter);
 app.use('/', userRouter)
 
-app.use(error)
+// app.use(error)
+
+app.use(errorLogger)
+app.use(errorResponder)
+app.use(failSafeHandler)
+
 app.listen(3001, () => {
     console.log("Port 3001 is listening")
 })

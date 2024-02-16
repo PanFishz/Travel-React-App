@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
 
 const DaySchema = new mongoose.Schema({
-    day: {
-        type: Number,
-        required: true
-    },
     activities: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Activity'

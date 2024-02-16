@@ -7,7 +7,6 @@ const { tripSchema, destinationSchema, activitySchema, activityTitleSchema, acti
 
 module.exports.validateAddATripForm = (req, res, next) => {
     const { trip } = req.body;
-    console.log(req.body)
     tripSchema
         .validate(trip)
         .catch(err => {
@@ -182,7 +181,6 @@ module.exports.isNoteAuthor = async (req, res, next) => {
         id = req.body.noteId;
     }
     const note = await NoteModel.findById(id);
-    console.log("KKKKKKKKKK", note, req.user._id)
     if (note.author !== (req.user._id).toString()) {
         return res.status(401).json('Not Logged In/ Unauthorized')
     }
@@ -195,3 +193,21 @@ module.exports.error = (err, req, res, next) => {
     res.status(statusCode).json("Something went wrong")
 }
 
+module.exports.errorLogger = (error, req, res, next) => { // for logging errors
+    console.error(error) // or using any fancy logging library
+    console.log('Path: ', req.path)
+    next(error) // forward to next middleware
+}
+
+module.exports.errorResponder = (error, req, res, next) => { // responding to client
+    if (error.type == 'redirect')
+        res.redirect('/error')
+    else if (error.type == 'time-out') // arbitrary condition check
+        res.status(408).send(error)
+    else
+        next(error) // forwarding exceptional case to fail-safe middleware
+}
+
+module.exports.failSafeHandler = (error, req, res, next) => { // generic handler
+    res.status(500).send(error)
+}
