@@ -6,7 +6,10 @@ export default defineConfig({
   plugins: [react()],
   optimizeDeps: {
     exclude: ['js-big-decimal']
-  }
+  },
+  build: {
+    chunkSizeWarningLimit: 1600,
+  },
   // server: {
   //   hmr: {
   //     protocol: 'ws',
