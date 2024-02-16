@@ -119,6 +119,7 @@ const sessionConfig = {
     secret,
     resave: false,
     saveUninitialized: true,
+    proxy: true,
     cookie: {
         httpOnly: true,
         //use in https
