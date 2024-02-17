@@ -1,5 +1,4 @@
 import './App.css'
-import 'bootstrap/dist/css/bootstrap.min.css'
 import TripList from './TripList'
 import { useMediaQuery } from 'react-responsive'
 import { useState, useEffect, useContext } from 'react';
