@@ -42,7 +42,7 @@ button {
 }
 
 button:hover {
-  border-color: #7DCFB6;
+  background-color: #ffe27a;
   ;
 }
 
@@ -62,7 +62,8 @@ button:focus-visible {
   }
 
   button {
-    background-color: #f9f9f9;
+    background-color: #5b5b5b;
+    color: #ffffff;
   }
 }
 
