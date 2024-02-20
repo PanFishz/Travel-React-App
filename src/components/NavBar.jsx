@@ -68,7 +68,7 @@ function DrawerAppBar(props) {
     const drawer = (
         <Box sx={{ textAlign: 'center' }}>
             <Typography variant="h6" sx={{ my: 2 }} onClick={() => { unfocusTrips(); handleDrawerToggle() }}>
-                TravelApp
+                WanderList
             </Typography>
             <Divider />
             <List>
@@ -129,7 +129,7 @@ function DrawerAppBar(props) {
                             textAlign="left"
 
                         >
-                            <Typography component={'span'} variant="h6" onClick={unfocusTrips}>TravelApp</Typography> {trip && <Typography component={'span'} textAlign="left" variant='h6' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey', display: { xs: 'block', sm: 'none' } }}>/ {trip}</Typography>}
+                            <Typography component={'span'} variant="h6" onClick={unfocusTrips}>WanderList</Typography> {trip && <Typography component={'span'} textAlign="left" variant='h6' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey', display: { xs: 'block', sm: 'none' } }}>/ {trip}</Typography>}
 
                         </Typography>
 
