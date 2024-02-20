@@ -16,6 +16,7 @@ export default defineConfig({
   //     host: 'localhost'
   //   }
   // }
+  base: './',
 })
 
 
