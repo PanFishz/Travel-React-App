@@ -20,7 +20,7 @@ export default function Authentication() {
             {!isLoggedIn && */}
             <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5 }}>
                 <Box sx={{ padding: 10 }}>
-                    <Typography variant='h2' sx={{ color: '#fff', fontWeight: 'bold' }}>TravelApp</Typography>
+                    <Typography variant='h2' sx={{ color: '#fff', fontWeight: 'bold' }}>WanderList</Typography>
                     <br />
                     <Box>
                         {loginFormVisible && <Login toRegister={() => { setLoginFormVisible(false) }} />
