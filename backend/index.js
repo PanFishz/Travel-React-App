@@ -123,7 +123,7 @@ const sessionConfig = {
     cookie: {
         httpOnly: true,
         //use in https
-        secure: process.env.NODE_ENV !== 'production' ? false : true,
+        //secure: process.env.NODE_ENV !== 'production' ? false : true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
         //sameSite: process.env.NODE_ENV !== 'production' ? 'lax' : 'none'
