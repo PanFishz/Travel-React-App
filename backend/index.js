@@ -123,10 +123,10 @@ const sessionConfig = {
     cookie: {
         httpOnly: true,
         //use in https
-        secure: true,
+        secure: process.env.NODE_ENV !== 'production' ? false : true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        sameSite: 'none'
+        //sameSite: 'none'
     }
 }
 //flash() must precede routes, bc flash() gives req.flash() function
