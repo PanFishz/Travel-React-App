@@ -2,7 +2,7 @@ const allowedOrigins = require('./allowedOrigins');
 
 
 const orginURL = process.env.NODE_ENV !== 'production' ? 'http://localhost:5173' :
-    'https://www.rinmeyers.com'
+    'https://www.wanderlist.rinmeyers.com'
 //'https://alwayswanderlist.onrender.com'
 
 
