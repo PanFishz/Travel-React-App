@@ -126,8 +126,8 @@ const sessionConfig = {
         secure: process.env.NODE_ENV !== 'production' ? false : true,
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
         maxAge: 1000 * 60 * 60 * 24 * 7,
-        //sameSite: process.env.NODE_ENV !== 'production' ? 'lax' : 'none'
-        sameSite: 'lax'
+        sameSite: process.env.NODE_ENV !== 'production' ? 'lax' : 'none'
+        //sameSite: 'lax'
     }
 }
 //flash() must precede routes, bc flash() gives req.flash() function
