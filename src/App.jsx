@@ -5,6 +5,17 @@ import { useMediaQuery } from 'react-responsive'
 import { useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import axios from './api/axios';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+
+const theme = createTheme({
+  palette: {
+    background: {
+      default: "darkgrey"
+    }
+  }
+});
 
 function App() {
   const isDesktop = useMediaQuery({ query: '(min-width: 1008px)' })
@@ -31,11 +42,12 @@ function App() {
 
 
   return (
-
-    <div className="App">
-      <TripList isMobile={isMobile} />
-    </div>
-
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <div className="App">
+        <TripList isMobile={isMobile} />
+      </div>
+    </ThemeProvider>
   )
 }
 

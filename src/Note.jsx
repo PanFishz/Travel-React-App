@@ -13,7 +13,6 @@ import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
 
 
-
 export default function Note({ note, deleteNote, editNote, submitImageFun, setMessage }) {
     const [editNoteFormVisible, setEditNoteFormVisible] = useState(false)
     const [isButtonDisabled, setButtonDisabled] = useState(false);

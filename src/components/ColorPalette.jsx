@@ -1,6 +1,7 @@
 
 import { createTheme } from '@mui/material/styles';
-import { light } from '@mui/material/styles/createPalette';
+
+
 
 const shades = {
     primary: {
@@ -42,7 +43,9 @@ const theme = createTheme({
         background: {
             dark: shades.primary[300],
             main: shades.primary[100],
-            light: shades.primary[200]
+            light: shades.primary[200],
+            default: "darkgrey"
+
         },
         text: {
             main: shades.primary[300],
@@ -56,7 +59,9 @@ const theme = createTheme({
             main: shades.primary[500],
             light: shades.primary[400],
         },
+
     },
+
 });
 
 export default theme;

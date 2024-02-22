@@ -1,6 +1,26 @@
-.Day {
-    border: 2px solid rgb(141, 140, 140);
-    border-radius: 7px;
-    box-shadow: 2px 2px 4px grey;
-    margin: 3px;
+@media (prefers-color-scheme: dark) {
+
+    .Day {
+        background-color: rgb(152, 152, 152);
+    }
+
+    .css-19kzrtu {
+        background-color: rgb(218, 217, 217);
+    }
+
+    .css-19owhuc {
+        background-color: rgb(218, 217, 217) !important;
+    }
+
+    .MuiDrawer-paper {
+        background-color: rgb(113, 112, 112) !important
+    }
+
+    /* .css-1tdhksd-MuiListItemText-root,
+    .SingleTripInMenu {
+        color: white !important;
+        background-color: rgb(75, 75, 75) !important;
+        padding: 0;
+        margin: 0;
+    } */
 }

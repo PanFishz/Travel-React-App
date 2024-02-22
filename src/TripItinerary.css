@@ -2,3 +2,22 @@
     /* border: 2px solid black; */
     min-width: 0.8em
 }
+
+@media (prefers-color-scheme: dark) {
+
+    h4,
+    .MuiTypography-h5,
+    .MuiTypography-h7,
+    .MuiTab-root {
+        color: #4f4e4e !important;
+
+    }
+
+    button:hover {
+        color: gray !important
+    }
+
+
+
+
+}
