@@ -92,7 +92,7 @@ const Register = ({ toLogin }) => {
         <ThemeProvider theme={theme}>
             <section>
                 <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <Typography variant='h3' sx={{ color: 'secondary.main' }}>Register</Typography>
+                <Typography variant='h4' sx={{ color: 'secondary.main' }}>Register</Typography>
                 <form onSubmit={handleSubmit}>
                     <label htmlFor="username">
                         Username:

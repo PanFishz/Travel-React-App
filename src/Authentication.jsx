@@ -18,11 +18,15 @@ export default function Authentication() {
             {isLoggedIn && <Navigate to="/mytrip" replace />}
 
             {!isLoggedIn && */}
-            <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5 }}>
-                <Box sx={{ padding: 10 }}>
-                    <Typography variant='h2' sx={{ color: '#fff', fontWeight: 'bold' }}>WanderList</Typography>
-                    <br />
+            <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5, maxWidth: '90vw' }}>
+                <Typography variant='h3' sx={{
+                    color: '#fff', fontWeight: 'bold', paddingTop: 10
+                }}>WanderList</Typography>
+                <Box sx={{ paddingBottom: 10, paddingX: 10 }}>
+
                     <Box>
+
+                        <br />
                         {loginFormVisible && <Login toRegister={() => { setLoginFormVisible(false) }} />
                         }
                         {!loginFormVisible && <Register toLogin={() => setLoginFormVisible(true)} />

@@ -148,8 +148,7 @@ export default function TripList({ isMobile, setisLoggedIn }) {
 
 
     return (
-        <Box>
-            {/* //TODO use auth instead cookies */console.log("auth id", auth.id)}
+        <Box className="TripList">
             {!auth.id && <><Authentication /></>}
             {auth.id &&
                 <><NavBar

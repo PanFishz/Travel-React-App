@@ -2,6 +2,8 @@
     display: flex;
     flex-direction: row;
     align-items: top;
+    max-width: 100vw;
+
 }
 
 /* .TripList div:first-child {
