@@ -72,6 +72,8 @@ a:hover {
 
 input[type="text"],
 input[type="password"],
+input[type="number"],
+select,
 button,
 textarea {
   font-family: 'Nunito', sans-serif;
@@ -121,13 +123,13 @@ button {
 }
 
 .invalid {
-  color: rgb(250, 111, 232);
+  color: rgb(249, 209, 167);
   margin-left: 0.25rem;
 }
 
 .errmsg {
-  background-color: lightpink;
-  color: firebrick;
+  background-color: #fedd64;
+  color: rgb(255, 255, 255);
   font-weight: bold;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
@@ -166,6 +168,7 @@ textarea :focus {
 
   input[type="text"],
   input[type="password"],
+  input[type="number"],
   textarea {
     color: #535353;
     background-color: #fff
