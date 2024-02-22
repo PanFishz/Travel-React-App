@@ -45,7 +45,7 @@ export default function TripList({ isMobile, setisLoggedIn }) {
                 .then(response => {
                     setTrips(response.data.trips)
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log('Unauthorized'))
         }
         if (auth.id !== "") {
             fetchData();

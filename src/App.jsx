@@ -1,7 +1,8 @@
 import './App.css'
+import './index.css'
 import TripList from './TripList'
 import { useMediaQuery } from 'react-responsive'
-import { useState, useEffect, useContext } from 'react';
+import { useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import axios from './api/axios';
 
@@ -19,10 +20,9 @@ function App() {
     await axios.get('/user', { withCredentials: true })
       .then(response => {
         setAuth({ id: response.data._id, username: response.data.username })
-        console.log("auth in app level", response.data.username)
       })
       .catch(err => {
-        console.log(err)
+        console.log('Not Logged In')
       })
   }
   useEffect(() => {
@@ -32,21 +32,9 @@ function App() {
 
   return (
 
-    <main className="App">
+    <div className="App">
       <TripList isMobile={isMobile} />
-      {/* <Routes>
-        <Route path='/signin' element={<Authentication isLoggedIn={isLoggedIn} setCookie={setCookie} setisLoggedIn={setisLoggedIn} />} />
-        <Route path='/'
-          element={
-            <Protected isLoggedIn={isLoggedIn}>
-              <TripList isMobile={isMobile} setisLoggedIn={setisLoggedIn} />
-            </Protected>
-          }
-        />
-      </Routes> */}
-
-
-    </main>
+    </div>
 
   )
 }
