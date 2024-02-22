@@ -1,6 +1,7 @@
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import '../Day.css'
 
 import { ThemeProvider } from '@mui/system';
 import theme from './ColorPalette';

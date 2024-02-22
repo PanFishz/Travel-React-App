@@ -52,6 +52,7 @@ export default function EditNoteForm({ note, submitFun, submitImageFun, afterSub
                     <option value="image">image</option>
                     <option value="note">note</option>
                 </select>
+                <br />
                 {formData.category === "image" ?
                     <div className="formInput">
                         <input

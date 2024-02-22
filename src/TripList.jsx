@@ -166,7 +166,8 @@ export default function TripList({ isMobile, setisLoggedIn }) {
                         {message && <Flash message={message} setMessage={setMessage} />}
                         {!addTripFormVisible && !focusedTrip && (<>{trips && trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
                         {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}
-                        {!focusedTrip &&
+                        {!focusedTrip && !addTripFormVisible &&
+
                             <Box sx={{ display: 'flex', flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-evenly', alignItems: 'stretch' }}>
                                 {trips && trips.map(trip => {
                                     return <Trip trip={trip} key={trip._id} deleteFun={deleteATrip} selectFun={focusATrip} editDestinationFun={editADest} cancelAddFun={cancelAddTrip} setMessage={setMessage} />

@@ -51,6 +51,7 @@ function DrawerAppBar(props) {
     const tripDrawer = (
         <>
             <ThemeProvider theme={theme}>
+                <CssBaseline />
                 <Divider />
                 <List onClick={handleTripClick}>
                     <ListItem disablePadding className="SingleTripInMenu">

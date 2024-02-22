@@ -5,10 +5,7 @@ import './TripItinerary.css'
 import AddIcon from '@mui/icons-material/Add';
 import axios from './api/axios';
 import './TripList.css'
-import Activity from './Activity'
-import Trip from './Trip';
 import * as React from 'react';
-import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -18,9 +15,9 @@ import TabList from '@mui/lab/TabList';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import '../public/stylesheets/title.css'
-import DeleteIcon from '@mui/icons-material/Delete';
 import theme from './components/ColorPalette'
 import { ThemeProvider } from '@mui/system';
+import CssBaseline from '@mui/material/CssBaseline';
 
 export default function TripItinerary({ trip, focusATrip, focusedTrip, user, setMessage, editDestinationFun, deleteFun, cancelAddFun }) {
     const [focusedDay, setFocusedDay] = useState("")
@@ -77,11 +74,12 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
 
     return (
         <ThemeProvider theme={theme}>
+            <CssBaseline />
             <Box className="TripItinerary" sx={{ minWidth: { xs: 300, sm: 550, md: 700, lg: 900, xl: 1100 }, minHeight: 550 }}>
                 <Typography variant='h4' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey', display: { xs: 'none', sm: 'block' } }}>
                     {trip.destination}
                 </Typography>
-                <Typography variant='h8' component={'div'} sx={{ color: 'grey' }}>
+                <Typography variant='h7' component={'div'} sx={{ color: 'grey' }}>
                     {trip.duration} {trip.duration === 1 ? " day " : " days "}
                     <Tooltip title="Add a day">
                         <IconButton onClick={addADay} >
