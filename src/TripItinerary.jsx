@@ -73,51 +73,51 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
 
 
     return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <Box className="TripItinerary" sx={{ minWidth: { xs: 300, sm: 550, md: 700, lg: 900, xl: 1100 }, minHeight: 550 }}>
-                <Typography variant='h4' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey', display: { xs: 'none', sm: 'block' } }}>
-                    {trip.destination}
-                </Typography>
-                <Typography variant='h7' component={'div'} sx={{ color: 'grey' }}>
-                    {trip.duration} {trip.duration === 1 ? " day " : " days "}
-                    <Tooltip title="Add a day">
-                        <IconButton onClick={addADay} >
-                            <AddIcon />
-                        </IconButton>
-                    </Tooltip>
-                </Typography>
-                {/* sx={{ maxWidth: { xs: 250, sm: 380 }, bgcolor: 'background.paper' }} */}
-                <Box >
-                    <TabContext value={tabValue}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <TabList onChange={handleChange} aria-label="days tabs" variant="scrollable"
-                                scrollButtons allowScrollButtonsMobile
-                            >
-                                {/* <Tab label="Item One" value="1" />
+        // <ThemeProvider theme={theme}>
+        //     <CssBaseline />
+        <Box className="TripItinerary" sx={{ minWidth: { xs: 300, sm: 550, md: 700, lg: 900, xl: 1100 }, minHeight: 550 }}>
+            <Typography variant='h4' sx={{ fontWeight: 'bold', textShadow: ' 2px 2px 4px grey', display: { xs: 'none', sm: 'block' } }}>
+                {trip.destination}
+            </Typography>
+            <Typography variant='h7' component={'div'} >
+                {trip.duration} {trip.duration === 1 ? " day " : " days "}
+                <Tooltip title="Add a day">
+                    <IconButton onClick={addADay} >
+                        <AddIcon />
+                    </IconButton>
+                </Tooltip>
+            </Typography>
+            {/* sx={{ maxWidth: { xs: 250, sm: 380 }, bgcolor: 'background.paper' }} */}
+            <Box >
+                <TabContext value={tabValue}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <TabList onChange={handleChange} aria-label="days tabs" variant="scrollable"
+                            scrollButtons allowScrollButtonsMobile
+                        >
+                            {/* <Tab label="Item One" value="1" />
                                 <Tab label="Item Two" value="2" />
                                 <Tab label="Item Three" value="3" /> */}
-                                {trip.days.map((day, i) => {
-                                    const labbelText = "Day " + (i + 1)
-                                    return <Tab key={i} label={labbelText} value={i.toString()} />
-                                })}
-                            </TabList>
-                        </Box>
-                        {/* <TabPanel value="1">Item One</TabPanel>
+                            {trip.days.map((day, i) => {
+                                const labbelText = "Day " + (i + 1)
+                                return <Tab key={i} label={labbelText} value={i.toString()} sx={{ color: 'textcolor.lightest' }} />
+                            })}
+                        </TabList>
+                    </Box>
+                    {/* <TabPanel value="1">Item One</TabPanel>
                         <TabPanel value="2">Item Two</TabPanel>
                         <TabPanel value="3">Item Three</TabPanel> */}
-                        {trip.days.map((day, i) => (
-                            <TabPanel value={i.toString()} key={day._id}>
-                                <Day day={day} dayIndex={i + 1} isOneDay={trip.duration === 1} key={day._id} user={user} deleteDay={deleteADay} setMessage={setMessage} />
-                            </TabPanel>
-                        ))}
+                    {trip.days.map((day, i) => (
+                        <TabPanel value={i.toString()} key={day._id}>
+                            <Day day={day} dayIndex={i + 1} isOneDay={trip.duration === 1} key={day._id} user={user} deleteDay={deleteADay} setMessage={setMessage} />
+                        </TabPanel>
+                    ))}
 
-                    </TabContext>
-                </Box>
-                {/* {focusedActivity !== "" && <div className="TripItinerary"><Activity activity={focusedActivity} showActivity={showActivity} /></div>} */}
+                </TabContext>
+            </Box>
+            {/* {focusedActivity !== "" && <div className="TripItinerary"><Activity activity={focusedActivity} showActivity={showActivity} /></div>} */}
 
-            </Box >
-        </ThemeProvider >
+        </Box >
+        // {/* </ThemeProvider > */ }
 
     )
 }

@@ -1,4 +1,4 @@
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
 
     .Day {
         background-color: rgb(152, 152, 152);
@@ -23,4 +23,9 @@
         padding: 0;
         margin: 0;
     } */
+/* }
+
+*/
+.Day {
+    border: 1px rgb(145, 144, 144) solid;
 }

@@ -146,59 +146,59 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
     }
 
     return (
-        <ThemeProvider theme={theme}>
+        // <ThemeProvider theme={theme}>
+        <Box>
+            {!formTitleVisible &&
+                <Typography variant="h6" component={'div'} sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey' }}>
+                    {activity.title}
+
+                    <Tooltip title="Edit this activity">
+                        <IconButton onClick={() => { setFormTitleVisible(true) }}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                    <Tooltip title="Delete this activity">
+                        <IconButton onClick={() => {
+                            setButtonDisabled(true);
+                            deleteActivity();
+
+                        }} disabled={isButtonDisabled}>
+                            <DeleteIcon />
+                        </IconButton>
+                    </Tooltip>
+                </Typography>
+            }
+            {formTitleVisible && <EditActivityTitleForm title={activity.title} submitFun={editTitle} cancelFun={cancelEditTitle} />}
+            {!formLocationVisible &&
+                <Typography variant="h7" component={'div'} >
+                    <a href={locationQueryString} target="_blank" >
+                        {activity.location}
+                    </a>
+                    <Tooltip title="Edit this activity">
+                        <IconButton onClick={() => { setFormLocationVisible(true) }}>
+                            <EditIcon />
+                        </IconButton>
+                    </Tooltip>
+
+                </Typography>}
+            {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} cancelFun={cancelEditLocation} />}
             <Box>
-                {!formTitleVisible &&
-                    <Typography variant="h6" component={'div'} sx={{ fontWeight: 'bold', color: 'secondary.main', textShadow: ' 2px 2px 4px grey' }}>
-                        {activity.title}
-
-                        <Tooltip title="Edit this activity">
-                            <IconButton onClick={() => { setFormTitleVisible(true) }}>
-                                <EditIcon />
+                <Typography sx={{ color: 'textcolor.link' }} component='div'>Notes:
+                    {!formAddNoteVisible &&
+                        <Tooltip title="Add a note">
+                            <IconButton onClick={() => { setFormAddNoteVisible(true) }}>
+                                <AddIcon />
                             </IconButton>
-                        </Tooltip>
+                        </Tooltip>}
+                    {formAddNoteVisible && <AddNoteForm submitFun={addANote} submitImageFun={addAnImage} cancelFun={cancelAddNote} />}
+                    {activity.notes.map(note => {
+                        return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} setMessage={setMessage} />
+                    })}
+                </Typography>
 
-                        <Tooltip title="Delete this activity">
-                            <IconButton onClick={() => {
-                                setButtonDisabled(true);
-                                deleteActivity();
-
-                            }} disabled={isButtonDisabled}>
-                                <DeleteIcon />
-                            </IconButton>
-                        </Tooltip>
-                    </Typography>
-                }
-                {formTitleVisible && <EditActivityTitleForm title={activity.title} submitFun={editTitle} cancelFun={cancelEditTitle} />}
-                {!formLocationVisible &&
-                    <Typography variant="h7" component={'div'} >
-                        <a href={locationQueryString} target="_blank" >
-                            {activity.location}
-                        </a>
-                        <Tooltip title="Edit this activity">
-                            <IconButton onClick={() => { setFormLocationVisible(true) }}>
-                                <EditIcon />
-                            </IconButton>
-                        </Tooltip>
-
-                    </Typography>}
-                {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} cancelFun={cancelEditLocation} />}
-                <Box>
-                    <Typography sx={{ color: 'grey' }} component='div'>Notes:
-                        {!formAddNoteVisible &&
-                            <Tooltip title="Add a note">
-                                <IconButton onClick={() => { setFormAddNoteVisible(true) }}>
-                                    <AddIcon />
-                                </IconButton>
-                            </Tooltip>}
-                        {formAddNoteVisible && <AddNoteForm submitFun={addANote} submitImageFun={addAnImage} cancelFun={cancelAddNote} />}
-                        {activity.notes.map(note => {
-                            return <Note key={note._id} note={note} deleteNote={() => { deleteANote(note._id) }} editNote={editANote} submitImageFun={editAnImage} setMessage={setMessage} />
-                        })}
-                    </Typography>
-
-                </Box>
             </Box>
-        </ThemeProvider>
+        </Box>
+        // </ThemeProvider>
     )
 }

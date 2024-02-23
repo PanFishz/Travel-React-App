@@ -32,35 +32,35 @@ const shades = {
 };
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: shades.primary[500],
-            light: shades.primary[700],
-        },
-        secondary: {
-            main: shades.primary[300],
-        },
-        background: {
-            dark: shades.primary[300],
-            main: shades.primary[100],
-            light: shades.primary[200],
-            default: "darkgrey"
+    // palette: {
+    //     primary: {
+    //         main: shades.primary[500],
+    //         light: shades.primary[700],
+    //     },
+    //     secondary: {
+    //         main: shades.primary[300],
+    //     },
+    //     background: {
+    //         dark: shades.primary[300],
+    //         main: shades.primary[100],
+    //         light: shades.primary[200],
+    //         //default: "darkgrey"
 
-        },
-        text: {
-            main: shades.primary[300],
-            light: shades.secondary[200]
-        },
-        action: {
-            main: shades.primary[200],
-        },
-        success: {
-            dark: shades.primary[600],
-            main: shades.primary[500],
-            light: shades.primary[400],
-        },
+    //     },
+    //     text: {
+    //         main: shades.primary[300],
+    //         light: shades.secondary[200]
+    //     },
+    //     action: {
+    //         main: shades.primary[200],
+    //     },
+    //     success: {
+    //         dark: shades.primary[600],
+    //         main: shades.primary[500],
+    //         light: shades.primary[400],
+    //     },
 
-    },
+    // },
 
 });
 

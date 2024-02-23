@@ -11,13 +11,13 @@ export default function SingleTripInMenu({ trip, selectFun }) {
 
 
     return (
-        <ThemeProvider theme={theme}>
-            <ListItem disablePadding className="SingleTripInMenu">
-                <ListItemButton sx={{ textAlign: 'center', backgroundColor: 'background.light' }}>
-                    <ListItemText primary={trip.destination} onClick={() => { selectFun(trip._id) }} sx={{ color: 'background.dark' }} />
-                </ListItemButton>
+        // <ThemeProvider theme={theme}>
+        <ListItem disablePadding className="SingleTripInMenu">
+            <ListItemButton sx={{ textAlign: 'center' }}>
+                <ListItemText primary={trip.destination} onClick={() => { selectFun(trip._id) }} sx={{ color: 'textcolor.main' }} />
+            </ListItemButton>
 
-            </ListItem>
-        </ThemeProvider>
+        </ListItem>
+        // </ThemeProvider>
     )
 }

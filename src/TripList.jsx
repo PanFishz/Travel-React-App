@@ -14,7 +14,9 @@ import Box from '@mui/material/Box';
 import AuthContext from "./context/AuthProvider";
 //import { useCookies } from 'react-cookie';
 
-export default function TripList({ isMobile, setisLoggedIn }) {
+
+
+export default function TripList({ isMobile }) {
     const [trips, setTrips] = useState([]);
     const [addTripFormVisible, setAddTripFormVisible] = useState(false)
     const [focusedTrip, setFocusedTrip] = useState("")
@@ -22,6 +24,7 @@ export default function TripList({ isMobile, setisLoggedIn }) {
     const { auth, setAuth } = useContext(AuthContext)
     //const [cookies, setCookie] = useCookies(['id', 'username']);
     const [message, setMessage] = useState('')
+
 
     useEffect(() => {
         setMessage('')
@@ -148,6 +151,7 @@ export default function TripList({ isMobile, setisLoggedIn }) {
 
 
     return (
+
         <Box className="TripList">
             {!auth.id && <><Authentication /></>}
             {auth.id &&
@@ -192,6 +196,7 @@ export default function TripList({ isMobile, setisLoggedIn }) {
 
 
         </Box>
+
     )
 }
 

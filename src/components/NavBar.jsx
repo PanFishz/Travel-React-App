@@ -20,7 +20,8 @@ import AuthContext from "../context/AuthProvider";
 import theme from './ColorPalette'
 
 const drawerWidth = 340;
-const navItems = ['About', 'Contact'];
+const navItems = []
+//['About', 'Contact'];
 
 
 
@@ -50,19 +51,19 @@ function DrawerAppBar(props) {
 
     const tripDrawer = (
         <>
-            <ThemeProvider theme={theme}>
-                <CssBaseline />
-                <Divider />
-                <List onClick={handleTripClick}>
-                    <ListItem disablePadding className="SingleTripInMenu">
-                        <ListItemButton sx={{ textAlign: 'center' }}>
-                            <ListItemText primary="All Trips" sx={{ color: 'success.main' }} onClick={unfocusTrips} />
-                        </ListItemButton>
-                    </ListItem>
-                    {getTripList()}
-                </List>
-                <Divider />
-            </ThemeProvider>
+            {/* <ThemeProvider theme={theme}>
+                <CssBaseline /> */}
+            <Divider />
+            <List onClick={handleTripClick}>
+                <ListItem disablePadding className="SingleTripInMenu">
+                    <ListItemButton sx={{ textAlign: 'center' }}>
+                        <ListItemText primary="All Trips" sx={{ color: 'textcolor.special' }} onClick={unfocusTrips} />
+                    </ListItemButton>
+                </ListItem>
+                {getTripList()}
+            </List>
+            <Divider />
+            {/* </ThemeProvider> */}
         </>
     )
 
@@ -109,52 +110,52 @@ function DrawerAppBar(props) {
     return (
 
         <Box sx={{ display: 'flex' }}>
-            <CssBaseline />
-            <ThemeProvider theme={theme}>
-                <AppBar component="nav" sx={{ bgcolor: 'background.main' }}>
-                    <Toolbar >
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            edge="start"
-                            onClick={handleDrawerToggle}
-                            sx={{ mr: 2, display: { sm: 'none' } }}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        {trip && <Typography component={'span'} sx={{ display: { sm: 'none' }, color: 'text.main' }}>{trip}</Typography>}
-                        <Typography
+            {/* <CssBaseline />
+            <ThemeProvider theme={theme}> */}
+            <AppBar component="nav" sx={{ bgcolor: 'background.main' }}>
+                <Toolbar >
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: 'none' }, color: 'textcolor.main' }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                    {trip && <Typography component={'span'} sx={{ display: { sm: 'none' }, color: 'textcolor.main' }}>{trip}</Typography>}
+                    <Typography
 
-                            component="div"
-                            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color: 'text.main' }}
-                            textAlign="left"
+                        component="div"
+                        sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' }, color: 'textcolor.main', fontWeight: 'bold' }}
+                        textAlign="left"
 
-                        >
-                            <Typography component={'span'} variant="h6" onClick={unfocusTrips}>WanderList</Typography> {trip && <Typography component={'span'} textAlign="left" variant='h6' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey', display: { xs: 'block', sm: 'none' } }}>/ {trip}</Typography>}
+                    >
+                        <Typography component={'span'} variant="h6" onClick={unfocusTrips}>WanderList</Typography> {trip && <Typography component={'span'} textAlign="left" variant='h6' sx={{ fontWeight: 'bold', color: 'background.default', textShadow: ' 2px 2px 4px grey', display: { xs: 'block', sm: 'none' } }}>/ {trip}</Typography>}
 
-                        </Typography>
+                    </Typography>
 
 
-                        <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-                            <Button sx={{ color: 'text.main' }} onClick={() => { setBigTripListOpen(true); setMessage('') }}>
-                                Trips
+                    <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                        <Button sx={{ color: 'textcolor.main' }} onClick={() => { setBigTripListOpen(true); setMessage('') }}>
+                            Trips
+                        </Button>
+                        <Button sx={{ color: 'textcolor.main' }} onClick={addATrip}>
+                            +Trip
+                        </Button>
+                        {navItems.map((item) => (
+                            <Button key={item} sx={{ color: 'textcolor.main' }} onClick={() => { setMessage('') }} >
+                                {item}
                             </Button>
-                            <Button sx={{ color: 'text.main' }} onClick={addATrip}>
-                                +Trip
-                            </Button>
-                            {navItems.map((item) => (
-                                <Button key={item} sx={{ color: 'text.main' }} onClick={() => { setMessage('') }} >
-                                    {item}
-                                </Button>
-                            ))}
-                            <Button sx={{ color: '#fff' }} onClick={logout}>
-                                {user}/Logout
-                            </Button>
+                        ))}
+                        <Button sx={{ color: '#fff' }} onClick={logout}>
+                            {user}/Logout
+                        </Button>
 
-                        </Box>
-                    </Toolbar>
-                </AppBar>
-            </ThemeProvider>
+                    </Box>
+                </Toolbar>
+            </AppBar>
+            {/* </ThemeProvider> */}
             <nav>
                 <Drawer
                     container={container}

@@ -1,7 +1,8 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
   text-align: center;
 }
 
@@ -19,7 +20,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 100vh;
   padding-top: 0.5rem;
   /* background-color: rgb(112, 112, 112); */
 }
