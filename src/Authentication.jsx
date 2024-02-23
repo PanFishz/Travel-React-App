@@ -13,34 +13,34 @@ export default function Authentication() {
     const [loginFormVisible, setLoginFormVisible] = useState(true)
 
     return (
-        <ThemeProvider theme={theme}>
-            {/* {console.log("pppp", isLoggedIn)}
-            {isLoggedIn && <Navigate to="/mytrip" replace />}
+        // <ThemeProvider theme={theme}>
 
-            {!isLoggedIn && */}
-            <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5, maxWidth: '90vw' }}>
-                <Typography variant='h3' sx={{
-                    color: '#fff', fontWeight: 'bold', paddingTop: 10
-                }}>WanderList</Typography>
-                <Box sx={{ paddingBottom: 10, paddingX: 10 }}>
+        // {isLoggedIn && <Navigate to="/mytrip" replace />}
 
-                    <Box>
+        // {!isLoggedIn && */}
+        <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5, maxWidth: '90vw' }}>
+            <Typography variant='h3' sx={{
+                color: '#fff', fontWeight: 'bold', paddingTop: 10
+            }}>WanderList</Typography>
+            <Box sx={{ paddingBottom: 10, paddingX: 10 }}>
 
-                        <br />
-                        {loginFormVisible && <Login toRegister={() => { setLoginFormVisible(false) }} />
-                        }
-                        {!loginFormVisible && <Register toLogin={() => setLoginFormVisible(true)} />
+                <Box>
 
-                        }
+                    <br />
+                    {loginFormVisible && <Login toRegister={() => { setLoginFormVisible(false) }} />
+                    }
+                    {!loginFormVisible && <Register toLogin={() => setLoginFormVisible(true)} />
+
+                    }
 
 
-                    </Box>
                 </Box>
             </Box>
-            {/* } */}
+        </Box>
+        // {/* } */}
 
 
-        </ThemeProvider>
+        // </ThemeProvider>
 
 
     )

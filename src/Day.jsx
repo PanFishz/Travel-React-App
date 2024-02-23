@@ -117,140 +117,141 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
 
     return (
         <Box className='Day'>
-            <ThemeProvider theme={theme} >
-                <CssBaseline />
-                <Box>
+            {/* <ThemeProvider theme={theme} >
+                <CssBaseline /> */}
+            <Box>
 
-                    <Box>
-                        <Typography variant='h5' component='div' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey' }}>
-                            Day {dayIndex}
-                            <Tooltip title="Delete this day">
-                                <span>
-                                    <IconButton onClick={() => {
-                                        setButtonDisabled(true);
-                                        deleteDay(day._id);
-                                    }} disabled={isOneDay ? true : isButtonDisabled} >
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </span>
-                            </Tooltip>
-                        </Typography>
+                <Box>
+                    <Typography variant='h5' component='div' sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey' }}>
+                        Day {dayIndex}
+                        <Tooltip title="Delete this day">
+                            <span>
+                                <IconButton onClick={() => {
+                                    setButtonDisabled(true);
+                                    deleteDay(day._id);
+                                }} disabled={isOneDay ? true : isButtonDisabled} >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </span>
+                        </Tooltip>
+                    </Typography>
+                    <br />
+                </Box>
+                <Box sx={{ display: { sm: 'none' } }}>
+                    <Typography sx={{ color: 'grey' }} component='div'>Activities:
+
+                        <Tooltip title="Add an activity">
+                            <IconButton onClick={() => setActivityFormVisible(true)}>
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>
+                    </Typography>
+                    {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
+
+                    {activities && activities.map((activity, i) => (
+                        <Accordion key={i} onClick={() => setMessage('')}>
+                            <AccordionSummary
+                                expandIcon={<ExpandMoreIcon />}
+                                aria-controls="panel-content"
+                                id={i}
+                                sx={{ color: 'textcolor.light' }}
+                            >
+                                {activity.title} - {activity.location}
+                            </AccordionSummary>
+                            <AccordionDetails>
+
+                                <Activity
+                                    activity={activity}
+                                    user={user}
+                                    deleteActivity={() => deleteAnActivity(activity._id)}
+                                    setUpdated={() => setUpdated(!updated)}
+                                    setMessage={setMessage} />
+                            </AccordionDetails>
+                        </Accordion>
+                    ))}
+                </Box>
+
+                <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                    <Box sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'center' }}>
+                        {activities.length !== 0 && <Tabs
+                            variant="scrollable"
+                            scrollButtons
+                            allowScrollButtonsMobile
+                            value={tabValue}
+                            onChange={handleChange}
+                            aria-label="activities tabs"
+
+                        >
+                            {activities && activities.map((activity, i) => (
+                                <Tab label={activity.title} key={i} {...a11yProps({ i })} />))
+                            }
+
+                        </Tabs>
+                        }
+
+                        <Tooltip title="Add an activity">
+                            <IconButton onClick={() => setActivityFormVisible(true)}>
+                                <AddIcon />
+                            </IconButton>
+                        </Tooltip>
+
                     </Box>
-                    <Box sx={{ display: { sm: 'none' } }}>
-                        <Typography sx={{ color: 'grey' }} component='div'>Activities:
+
+                    <Box
+                        sx={{ flexGrow: 1, display: 'flex' }}
+                    >
+                        <Box sx={{ display: { xs: 'none', sm: 'block' }, alignContent: 'center', alignItems: 'center' }}>
 
                             <Tooltip title="Add an activity">
                                 <IconButton onClick={() => setActivityFormVisible(true)}>
                                     <AddIcon />
                                 </IconButton>
                             </Tooltip>
-                        </Typography>
-                        {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
 
-                        {activities && activities.map((activity, i) => (
-                            <Accordion key={i} onClick={() => setMessage('')}>
-                                <AccordionSummary
-                                    expandIcon={<ExpandMoreIcon />}
-                                    aria-controls="panel-content"
-                                    id={i}
-                                    sx={{ color: 'text.main' }}
-                                >
-                                    {activity.title} - {activity.location}
-                                </AccordionSummary>
-                                <AccordionDetails>
-
-                                    <Activity
-                                        activity={activity}
-                                        user={user}
-                                        deleteActivity={() => deleteAnActivity(activity._id)}
-                                        setUpdated={() => setUpdated(!updated)}
-                                        setMessage={setMessage} />
-                                </AccordionDetails>
-                            </Accordion>
-                        ))}
-                    </Box>
-
-                    <Box className="Day" sx={{ display: { xs: 'none', sm: 'block' } }}>
-                        <Box sx={{ display: { xs: 'flex', sm: 'none' }, justifyContent: 'center' }}>
-                            {activities.length !== 0 && <Tabs
+                            <Tabs
+                                orientation="vertical"
                                 variant="scrollable"
-                                scrollButtons
-                                allowScrollButtonsMobile
                                 value={tabValue}
                                 onChange={handleChange}
-                                aria-label="activities tabs"
-
+                                aria-label="Vertical activities tabs"
+                                sx={{ borderRight: 1, borderColor: 'divider', maxHeight: { xs: 350, sm: 400, md: 500, lg: 500, xl: 500 } }}
                             >
                                 {activities && activities.map((activity, i) => (
-                                    <Tab label={activity.title} key={i} {...a11yProps({ i })} />))
+                                    <Tab label={activity.title} key={i} {...a11yProps({ i })} sx={{ color: 'textcolor.lightest' }} />))
                                 }
 
                             </Tabs>
-                            }
-
-                            <Tooltip title="Add an activity">
-                                <IconButton onClick={() => setActivityFormVisible(true)}>
-                                    <AddIcon />
-                                </IconButton>
-                            </Tooltip>
-
                         </Box>
 
-                        <Box
-                            sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}
+                        <Grid
+                            container
+                            direction="column"
+                            justifyContent="flex-start"
+                            alignItems="center"
                         >
-                            <Box sx={{ display: { xs: 'none', sm: 'block' }, alignContent: 'center', alignItems: 'center' }}>
+                            <Box sx={{ maxWidth: { xs: 350, sm: 400, md: 600, lg: 850, xl: 1000 } }}>
+                                {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
 
-                                <Tooltip title="Add an activity">
-                                    <IconButton onClick={() => setActivityFormVisible(true)}>
-                                        <AddIcon />
-                                    </IconButton>
-                                </Tooltip>
-
-                                <Tabs
-                                    orientation="vertical"
-                                    variant="scrollable"
-                                    value={tabValue}
-                                    onChange={handleChange}
-                                    aria-label="Vertical activities tabs"
-                                    sx={{ borderRight: 1, borderColor: 'divider', maxHeight: { xs: 350, sm: 400, md: 500, lg: 500, xl: 500 } }}
-                                >
-                                    {activities && activities.map((activity, i) => (
-                                        <Tab label={activity.title} key={i} {...a11yProps({ i })} />))
-                                    }
-
-                                </Tabs>
-                            </Box>
-
-                            <Grid
-                                container
-                                direction="column"
-                                justifyContent="flex-start"
-                                alignItems="center"
-                            >
-                                <Box sx={{ maxWidth: { xs: 350, sm: 400, md: 600, lg: 850, xl: 1000 } }}>
-                                    {activityFormVisible && <AddActivityForm dayId={day._id} submitFun={addAnActivity} submitFun2={() => { setActivityFormVisible(false) }} cancelFun={cancelFun} />}
-
-                                    {activities && activities.map((activity, i) => (
-                                        <TabPanel value={tabValue} index={i} key={i}>
-                                            {/* <Typography component={'span'}> {activity.title} - {activity.location}</Typography> */}
-                                            {/* <Tooltip title="Delete this activity">
+                                {activities && activities.map((activity, i) => (
+                                    <TabPanel value={tabValue} index={i} key={i}>
+                                        {/* <Typography component={'span'}> {activity.title} - {activity.location}</Typography> */}
+                                        {/* <Tooltip title="Delete this activity">
                                     <IconButton onClick={() => deleteAnActivity(activity._id)}>
                                         <DeleteIcon />
                                     </IconButton>
                                 </Tooltip> */}
-                                            <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} setMessage={setMessage} />
-                                        </TabPanel>
-                                    ))}
-                                </Box>
-                            </Grid>
+                                        <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} setMessage={setMessage} />
+                                    </TabPanel>
+                                ))}
+                            </Box>
+                        </Grid>
 
-                        </Box>
+                    </Box>
 
 
-                    </Box >
-                </Box>
-            </ThemeProvider>
-        </Box>
+                </Box >
+            </Box>
+            {/* </ThemeProvider> */}
+        </Box >
     )
 }

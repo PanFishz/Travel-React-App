@@ -57,41 +57,41 @@ const Login = ({ toRegister }) => {
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <section>
-                <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
-                <Typography variant='h4' sx={{ color: 'secondary.main' }}>Sign In</Typography>
-                <form onSubmit={handleSubmit}>
-                    <label htmlFor="username">Username:</label>
-                    <input
-                        type="text"
-                        id="username"
-                        ref={userRef}
-                        autoComplete="off"
-                        onChange={(e) => setUser(e.target.value)}
-                        value={user}
-                        required
-                    />
+        // <ThemeProvider theme={theme}>
+        <section>
+            <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
+            <Typography variant='h4'>Sign In</Typography>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="username">Username:</label>
+                <input
+                    type="text"
+                    id="username"
+                    ref={userRef}
+                    autoComplete="off"
+                    onChange={(e) => setUser(e.target.value)}
+                    value={user}
+                    required
+                />
 
-                    <label htmlFor="password">Password:</label>
-                    <input
-                        type="password"
-                        id="password"
-                        onChange={(e) => setPwd(e.target.value)}
-                        value={pwd}
-                        required
-                    />
-                    <button>Sign In</button>
-                </form>
-                <p>
-                    Need an Account?<br />
-                    <span className="line" onClick={toRegister} >
-                        {/*put router link here*/}
-                        Sign Up
-                    </span>
-                </p>
-            </section>
-        </ThemeProvider>
+                <label htmlFor="password">Password:</label>
+                <input
+                    type="password"
+                    id="password"
+                    onChange={(e) => setPwd(e.target.value)}
+                    value={pwd}
+                    required
+                />
+                <button>Sign In</button>
+            </form>
+            <p>
+                Need an Account?<br />
+                <span className="line" onClick={toRegister} >
+                    {/*put router link here*/}
+                    Sign Up
+                </span>
+            </p>
+        </section>
+        // </ThemeProvider>
     )
 }
 
