@@ -127,10 +127,9 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
                             </span>
                         </Tooltip>
                     </Typography>
-                    <br />
                 </Box>
                 <Box sx={{ display: { sm: 'none' } }}>
-                    <Typography sx={{ color: 'grey' }} component='div'>Activities:
+                    <Typography sx={{ color: 'textcolor.link' }} component='div'>Activities:
 
                         <Tooltip title="Add an activity">
                             <IconButton onClick={() => setActivityFormVisible(true)}>

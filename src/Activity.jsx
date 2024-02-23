@@ -11,12 +11,9 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
-import { ThemeProvider } from '@mui/system';
-import theme from './components/ColorPalette';
 
 
 export default function Activity({ activity, deleteActivity, setUpdated, user, setMessage }) {
-    // const [focusedActivity, setFocusedActivity] = useState(activity)
     const [formTitleVisible, setFormTitleVisible] = useState(false)
     const [formLocationVisible, setFormLocationVisible] = useState(false)
     const [formAddNoteVisible, setFormAddNoteVisible] = useState(false)
@@ -36,7 +33,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
         }, { withCredentials: true, })
             .then(activity => {
                 setFormTitleVisible(false);
-                //setFocusedActivity(activity.data)
                 setUpdated()
             })
             .catch(err => console.log(err))
@@ -48,7 +44,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
         }, { withCredentials: true, })
             .then(activity => {
                 setFormLocationVisible(false);
-                //setFocusedActivity(activity.data)
                 setUpdated()
             })
             .catch(err => console.log(err))
@@ -59,7 +54,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
         }, { withCredentials: true, })
             .then(activity => {
                 setFormAddNoteVisible(false);
-                //setFocusedActivity(activity.data)
                 setUpdated()
             })
             .catch(err => console.log(err))
@@ -72,7 +66,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
         })
             .then(activity => {
                 setFormAddNoteVisible(false);
-                //setFocusedActivity(activity.data)
                 setUpdated()
             })
             .catch(err => console.log(err))
@@ -84,7 +77,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
         }, { withCredentials: true, })
             .then(activity => {
                 setFormAddNoteVisible(false);
-                //setFocusedActivity(activity.data)
                 setUpdated()
             })
             .catch(err => console.log(err))
@@ -139,7 +131,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
     }
 
     return (
-        // <ThemeProvider theme={theme}>
         <Box>
             {!formTitleVisible &&
                 <Typography variant="h6" component={'div'} sx={{ fontWeight: 'bold', color: 'text.main', textShadow: ' 2px 2px 4px grey' }}>
@@ -192,6 +183,5 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
 
             </Box>
         </Box>
-        // </ThemeProvider>
     )
 }

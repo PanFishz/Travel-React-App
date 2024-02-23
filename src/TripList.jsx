@@ -158,7 +158,7 @@ export default function TripList({ isMobile }) {
                     setMessage={setMessage} />
 
 
-                    <Box component="main" sx={{ pt: { xs: 2, sm: 5 }, maxWidth: { xs: 330, sm: 600, md: 800, lg: 1000, xl: 1300 } }} >
+                    <Box component="main" sx={{ pt: { xs: 2, sm: 5 }, maxWidth: { xs: 360, sm: 580, md: 880, lg: 1180, xl: 1300 } }} >
                         {message && <Flash message={message} setMessage={setMessage} />}
                         {!addTripFormVisible && !focusedTrip && (<>{trips && trips.length > 0 ? <AddIcon onClick={() => setAddTripFormVisible(true)} /> : <button onClick={() => setAddTripFormVisible(true)} >Add A Trip</button>}</>)}
                         {addTripFormVisible && <AddTripForm submitFun={addATrip} cancelFun={() => setAddTripFormVisible(false)} />}

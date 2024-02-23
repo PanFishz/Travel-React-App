@@ -75,6 +75,15 @@ a:visited {
   color: #cccbcb;
 }
 
+@media screen and (max-width: 600px) {
+
+  a,
+  a:visited {
+    color: #f1f0f0;
+  }
+
+}
+
 a:hover {
   color: #fedd64;
 }
