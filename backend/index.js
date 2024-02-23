@@ -143,16 +143,6 @@ passport.serializeUser(UserModel.serializeUser());
 passport.deserializeUser(UserModel.deserializeUser());
 
 
-
-
-// app.use((req, res, next) => {
-//     //console.log(req.session.returnTo)
-//     //console.log(req.query, req.body)
-//     res.locals.currentUser = req.user;
-//     next();
-// })
-
-
 app.use('/trips', tripsRouter);
 app.use('/days', daysRouter);
 app.use('/activities', activitiesRouter);

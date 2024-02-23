@@ -54,7 +54,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
             .catch(err => console.log(err))
     }
     const addANote = (note) => {
-        console.log("Note:", note, activity._id)
         axios.post(`/activities/${activity._id}/note`, {
             id: activity._id, note: note, userId: user
         }, { withCredentials: true, })
@@ -67,7 +66,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
     }
 
     const deleteANote = (id) => {
-        console.log(id)
         axios.delete(`/activities/${activity._id}/notes/${id}`, {
             params: { activityId: activity._id, noteId: id },
             withCredentials: true,
@@ -81,7 +79,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
     }
 
     const editANote = (id, newNote, filename) => {
-        console.log(id, newNote)
         axios.patch(`/activities/${activity._id}/notes/${id}`, {
             activityId: activity._id, noteId: id, note: newNote, filename: filename
         }, { withCredentials: true, })
@@ -94,7 +91,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
     }
 
     const addAnImage = (formData) => {
-        console.log(formData)
         axios.post(`/activities/${activity._id}/images`,
             formData,
             {
@@ -105,7 +101,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
                     { "Content-type": "multipart/form-data" },
                 withCredentials: true,
             }).then(res => {
-                console.log(res.data);
                 addANote(res.data)
 
             })
@@ -114,7 +109,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
             })
     }
     const editAnImage = (id, formData, filename) => {
-        console.log(formData)
         axios.post(`/activities/${activity._id}/images`,
             formData,
             {
@@ -125,7 +119,6 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
                     { "Content-type": "multipart/form-data" },
                 withCredentials: true,
             }).then(res => {
-                console.log(res.data);
                 editANote(id, res.data, filename);
             })
             .catch(err => {

@@ -12,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import Authentication from "./Authentication";
 import Box from '@mui/material/Box';
 import AuthContext from "./context/AuthProvider";
-//import { useCookies } from 'react-cookie';
+
 
 
 
@@ -22,7 +22,6 @@ export default function TripList({ isMobile }) {
     const [focusedTrip, setFocusedTrip] = useState("")
     const [displayingTrip, setDisplayingTrip] = useState({})
     const { auth, setAuth } = useContext(AuthContext)
-    //const [cookies, setCookie] = useCookies(['id', 'username']);
     const [message, setMessage] = useState('')
 
 
@@ -34,9 +33,10 @@ export default function TripList({ isMobile }) {
         setAddTripFormVisible(false)
     }, [trips, focusedTrip, displayingTrip, auth])
 
+
+
     useEffect(() => {
         async function fetchData() {
-            // await axios.get('/trips', { withCredentials: true, })
             await axios({
                 method: "get",
                 url: '/trips',
@@ -50,9 +50,8 @@ export default function TripList({ isMobile }) {
                 })
                 .catch(err => console.log('Unauthorized'))
         }
-        if (auth.id !== "") {
+        if (Object.keys(auth).length !== 0 && auth.constructor === Object) {
             fetchData();
-            //setAuth({ id: auth.id, username: auth.username })
         }
     }, [displayingTrip, focusedTrip, auth])
 
@@ -103,7 +102,6 @@ export default function TripList({ isMobile }) {
     const editADest = (id, destination) => {
         axios.patch(`/trips/${id}/destination`, { id, destination }, { withCredentials: true, })
             .then(trip => {
-                //setTrips(trip.data);
                 focusATrip(id)
             }
             )
@@ -128,16 +126,10 @@ export default function TripList({ isMobile }) {
         setAddTripFormVisible(false)
     }
 
-    const retriveUser = (data) => {
-        setUser(data)
-    }
-
 
     const logout = async () => {
         await axios.get('/logout', { params: { id: auth.id }, withCredentials: true, })
             .then(response => {
-                // setCookie('id', "");
-                // setCookie('username', "");
                 setFocusedTrip("")
                 setDisplayingTrip({});
                 setTrips([])
@@ -199,12 +191,3 @@ export default function TripList({ isMobile }) {
 
     )
 }
-
-// Methods	Urls	Actions
-// POST	/api/tutorials	create new Tutorial
-// GET	/api/tutorials	retrieve all Tutorials
-// GET	/api/tutorials/:id	retrieve a Tutorial by :id
-// PUT	/api/tutorials/:id	update a Tutorial by :id
-// DELETE	/api/tutorials/:id	delete a Tutorial by :id
-// DELETE	/api/tutorials	delete all Tutorials
-// GET	/api/tutorials?title=[keyword]	

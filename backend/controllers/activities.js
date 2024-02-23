@@ -7,8 +7,6 @@ module.exports.addANote = async (req, res, next) => {
         const { id, note, userId } = req.body;
         const activity = await ActivityModel.findById(id)
         const newNote = new NoteModel(note)
-
-        //const images = req.files.map(f => ({ url: f.path, filename: f.filename }))
         newNote.author = userId
         await newNote.save()
         activity.notes.push(newNote)
@@ -82,10 +80,5 @@ module.exports.editANote = async (req, res, next) => {
 }
 
 module.exports.getImageUrl = (req, res) => {
-    // const imageName = req.file.filename
-    // const description = req.body.category
-    console.log("get image url: ", req.body, req.file.path, req.file.filename)
-    // Save this data to a database probably
-    //console.log(description, imageName)
     res.send({ category: 'image', content: req.file.path, filename: req.file.filename })
 }

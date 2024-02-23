@@ -1,31 +1,3 @@
-/* @media (prefers-color-scheme: dark) {
-
-    .Day {
-        background-color: rgb(152, 152, 152);
-    }
-
-    .css-19kzrtu {
-        background-color: rgb(218, 217, 217);
-    }
-
-    .css-19owhuc {
-        background-color: rgb(218, 217, 217) !important;
-    }
-
-    .MuiDrawer-paper {
-        background-color: rgb(113, 112, 112) !important
-    }
-
-    /* .css-1tdhksd-MuiListItemText-root,
-    .SingleTripInMenu {
-        color: white !important;
-        background-color: rgb(75, 75, 75) !important;
-        padding: 0;
-        margin: 0;
-    } */
-/* }
-
-*/
 .Day {
     border: 1px rgb(145, 144, 144) solid;
 }
