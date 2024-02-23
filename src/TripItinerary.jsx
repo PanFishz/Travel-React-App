@@ -15,29 +15,16 @@ import TabList from '@mui/lab/TabList';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
 import '../public/stylesheets/title.css'
-import theme from './components/ColorPalette'
-import { ThemeProvider } from '@mui/system';
-import CssBaseline from '@mui/material/CssBaseline';
+
 
 export default function TripItinerary({ trip, focusATrip, focusedTrip, user, setMessage, editDestinationFun, deleteFun, cancelAddFun }) {
-    const [focusedDay, setFocusedDay] = useState("")
-    const [focusedActivity, setFocusedActivity] = useState("")
     const [tabValue, setTabValue] = useState('0');
 
     const handleChange = (event, newValue) => {
         setTabValue(newValue);
     };
 
-
-
-
-    // useEffect(() => {
-    //     setFocusedActivity("")
-
-    // }, [focusedDay, focusedTrip])
-
     useEffect(() => {
-        //setFocusedDay("")
         setTabValue('0')
     }, [focusedTrip])
 
@@ -62,7 +49,6 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
         })
             .then(trip => {
                 focusATrip(trip.data._id)
-                //setFocusedActivity("")
                 setTabValue('0')
             })
             .catch(function (error) {
@@ -73,8 +59,6 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
 
 
     return (
-        // <ThemeProvider theme={theme}>
-        //     <CssBaseline />
         <Box className="TripItinerary" sx={{ minWidth: { xs: 300, sm: 550, md: 700, lg: 900, xl: 1100 }, minHeight: 550 }}>
             <Typography variant='h4' sx={{ fontWeight: 'bold', textShadow: ' 2px 2px 4px grey', display: { xs: 'none', sm: 'block' } }}>
                 {trip.destination}
@@ -87,7 +71,6 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
                     </IconButton>
                 </Tooltip>
             </Typography>
-            {/* sx={{ maxWidth: { xs: 250, sm: 380 }, bgcolor: 'background.paper' }} */}
             <Box >
                 <TabContext value={tabValue}>
                     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -114,10 +97,6 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
 
                 </TabContext>
             </Box>
-            {/* {focusedActivity !== "" && <div className="TripItinerary"><Activity activity={focusedActivity} showActivity={showActivity} /></div>} */}
-
         </Box >
-        // {/* </ThemeProvider > */ }
-
     )
 }

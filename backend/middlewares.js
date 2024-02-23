@@ -104,7 +104,7 @@ module.exports.validateNote = (req, res, next) => {
 
 module.exports.isLoggedIn = function (req, res, next) {
     if (!req.isAuthenticated()) {
-        return res.status(401).json('Not Logged In/ Unauthorized (isLoggeIn)')
+        return res.status(401).json('Login Required')
     }
     next();
 
@@ -128,7 +128,7 @@ module.exports.isTripAuthor = async (req, res, next) => {
 module.exports.isUser = (req, res, next) => {
     const { id } = req.query
     if (id !== (req.user._id).toString()) {
-        return res.status(401).json('Not Logged In/ Unauthorized(isUser)')
+        return res.status(401).json('Unauthorized')
     }
     next();
 }

@@ -19,8 +19,6 @@ export default function EditNoteForm({ note, submitFun, submitImageFun, afterSub
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        //submitFun(note._id, formData)
-        //afterSubmitFun()
         if (!file) {
             submitFun(note._id, formData, note.filename)
         } else {

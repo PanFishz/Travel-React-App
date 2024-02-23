@@ -26,9 +26,6 @@ module.exports.addATrip = async (req, res, next) => {
 }
 
 module.exports.getAllTrips = async (req, res) => {
-    // await TripModel.find()
-    //     .then(trips => res.json(trips))
-    //     .catch(err => res.json(err))
     const { id } = req.query
     await UserModel.findById(id).populate({ path: 'trips', populate: { path: 'days', populate: { path: 'activities', populate: { path: 'notes' } } } })
         .then(trips => { res.json(trips) })
@@ -92,8 +89,6 @@ module.exports.deleteADayFromTrip = async (req, res) => {
 
             trip.days.pull({ _id: id })
 
-            //await TripModel.findByIdAndUpdate({ _id: tripId }, { $inc: { duration: -1 } })
-
             await trip.updateOne({ $inc: { duration: -1 } })
 
             const day = await DayModel.findById(id).populate({ path: 'activities', populate: { path: 'notes' } })
@@ -127,8 +122,5 @@ module.exports.editDestination = async (req, res) => {
             res.json({ trip })
         })
         .catch(err => res.json(err))
-    // TripModel.find()
-    //     .then(trips => res.json({ trips, trip }))
-    //     .catch(err => res.json(err))
 }
 

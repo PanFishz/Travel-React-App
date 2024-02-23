@@ -17,7 +17,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import AuthContext from "../context/AuthProvider";
-import theme from './ColorPalette'
 
 const drawerWidth = 340;
 const navItems = []
@@ -51,8 +50,6 @@ function DrawerAppBar(props) {
 
     const tripDrawer = (
         <>
-            {/* <ThemeProvider theme={theme}>
-                <CssBaseline /> */}
             <Divider />
             <List onClick={handleTripClick}>
                 <ListItem disablePadding className="SingleTripInMenu">
@@ -63,7 +60,6 @@ function DrawerAppBar(props) {
                 {getTripList()}
             </List>
             <Divider />
-            {/* </ThemeProvider> */}
         </>
     )
 
@@ -110,8 +106,6 @@ function DrawerAppBar(props) {
     return (
 
         <Box sx={{ display: 'flex' }}>
-            {/* <CssBaseline />
-            <ThemeProvider theme={theme}> */}
             <AppBar component="nav" sx={{ bgcolor: 'background.main' }}>
                 <Toolbar >
                     <IconButton
@@ -155,7 +149,6 @@ function DrawerAppBar(props) {
                     </Box>
                 </Toolbar>
             </AppBar>
-            {/* </ThemeProvider> */}
             <nav>
                 <Drawer
                     container={container}

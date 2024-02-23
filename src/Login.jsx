@@ -1,14 +1,11 @@
 import { useRef, useState, useEffect, useContext } from 'react';
 import AuthContext from "./context/AuthProvider";
 import axios from './api/axios';
-import { useNavigate } from "react-router-dom";
-import theme from './components/ColorPalette'
-import { ThemeProvider } from '@emotion/react';
 import Typography from '@mui/material/Typography';
 
 
 const Login = ({ toRegister }) => {
-    const { auth, setAuth } = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext);
     const userRef = useRef();
     const errRef = useRef();
 
@@ -36,7 +33,6 @@ const Login = ({ toRegister }) => {
             );
             const id = response?.data._id
             const username = response?.data.username
-
             setAuth({ username, id });
             setUser('');
             setPwd('');
@@ -48,7 +44,7 @@ const Login = ({ toRegister }) => {
             } else if (err.response?.status === 400) {
                 setErrMsg('Missing Username or Password');
             } else if (err.response?.status === 401) {
-                setErrMsg('Unauthorized');
+                setErrMsg('Incorrect Username or Password');
             } else {
                 setErrMsg('Login Failed');
             }
@@ -57,7 +53,6 @@ const Login = ({ toRegister }) => {
     }
 
     return (
-        // <ThemeProvider theme={theme}>
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <Typography variant='h4'>Sign In</Typography>
@@ -86,12 +81,10 @@ const Login = ({ toRegister }) => {
             <p>
                 Need an Account?<br />
                 <span className="line" onClick={toRegister} >
-                    {/*put router link here*/}
                     Sign Up
                 </span>
             </p>
         </section>
-        // </ThemeProvider>
     )
 }
 

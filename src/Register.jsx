@@ -3,8 +3,6 @@ import AuthContext from "./context/AuthProvider";
 import { faCheck, faTimes, faInfoCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from './api/axios';
-import theme from './components/ColorPalette'
-import { ThemeProvider } from '@emotion/react';
 import Typography from '@mui/material/Typography';
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
@@ -12,7 +10,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 
 
 const Register = ({ toLogin }) => {
-    const { setAuth, auth } = useContext(AuthContext);
+    const { setAuth } = useContext(AuthContext);
 
     const userRef = useRef();
     const errRef = useRef();
@@ -89,7 +87,6 @@ const Register = ({ toLogin }) => {
     }
 
     return (
-        // <ThemeProvider theme={theme}>
         <section>
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <Typography variant='h4'>Register</Typography>
@@ -170,12 +167,10 @@ const Register = ({ toLogin }) => {
             <p>
                 Already registered?<br />
                 <span className="line" onClick={toLogin} >
-                    {/*put router link here*/}
                     Sign In
                 </span>
             </p>
         </section>
-        // </ThemeProvider>
     )
 }
 

@@ -14,7 +14,7 @@ const corsOptions = {
     //         callback(new Error('Not allowed by CORS'));
     //     }
     // },
-    origin: orginURL, //"https://alwayswanderlist.onrender.com",
+    origin: orginURL,
     optionsSuccessStatus: 200,
     credentials: true,
 

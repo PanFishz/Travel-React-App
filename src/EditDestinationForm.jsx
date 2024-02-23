@@ -26,9 +26,6 @@ export default function EditDestinationForm({ submitFun, destination, id, cleanu
         <div>
             <form onSubmit={handleSubmit}>
                 <FormInput {...input} value={formData} onChange={onChange} />
-                {/* <input type="text" value={formData} required onChange={(e) => { setFormData(e.target.value) }} /> */}
-                {/* <CheckIcon onClick={handleSubmit} />
-                <CloseIcon onClick={cleanup} /> */}
                 <button>Submit</button>
                 <button type="button" onClick={cleanup}>Cancel</button>
             </form>

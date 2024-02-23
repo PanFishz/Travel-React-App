@@ -41,7 +41,7 @@ module.exports.getUserName = async (req, res) => {
             .then(user => res.json(user))
             .catch(err => res.json(err))
     } else {
-        res.status(301).json("Not signed in")
+        res.status(401).json("Not signed in")
     }
 
 }

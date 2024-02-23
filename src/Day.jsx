@@ -18,9 +18,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { ThemeProvider } from '@mui/system';
-import theme from './components/ColorPalette';
-import CssBaseline from '@mui/material/CssBaseline';
+
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -97,10 +95,6 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
 
     const addAnActivity = (id, activity) => {
         axios.post(`/days/${id}/addAnActivity`, { id, activity, userId: user }
-            // activity, {
-            //     params: {
-            //         id
-            //     }}
             , { withCredentials: true, })
             .then(response => {
                 setActivities(response.data.day.activities)
@@ -117,8 +111,6 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
 
     return (
         <Box className='Day'>
-            {/* <ThemeProvider theme={theme} >
-                <CssBaseline /> */}
             <Box>
 
                 <Box>
@@ -234,12 +226,6 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
 
                                 {activities && activities.map((activity, i) => (
                                     <TabPanel value={tabValue} index={i} key={i}>
-                                        {/* <Typography component={'span'}> {activity.title} - {activity.location}</Typography> */}
-                                        {/* <Tooltip title="Delete this activity">
-                                    <IconButton onClick={() => deleteAnActivity(activity._id)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                </Tooltip> */}
                                         <Activity activity={activity} user={user} deleteActivity={() => deleteAnActivity(activity._id)} setUpdated={() => setUpdated(!updated)} setMessage={setMessage} />
                                     </TabPanel>
                                 ))}
@@ -251,7 +237,6 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
 
                 </Box >
             </Box>
-            {/* </ThemeProvider> */}
         </Box >
     )
 }

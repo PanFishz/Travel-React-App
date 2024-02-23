@@ -71,9 +71,6 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
                             <DeleteIcon />
                         </IconButton>
                     </Tooltip>
-
-                    {/* <EditIcon onClick={() => { setEditNoteFormVisible(true) }} />
-                    <DeleteIcon onClick={deleteNote} /> */}
                 </Box>}
             {editNoteFormVisible && <EditNoteForm note={note} submitFun={editNote} submitImageFun={submitImageFun} afterSubmitFun={() => { setEditNoteFormVisible(false) }} />}
         </Box>
