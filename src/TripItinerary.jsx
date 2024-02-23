@@ -59,7 +59,7 @@ export default function TripItinerary({ trip, focusATrip, focusedTrip, user, set
 
 
     return (
-        <Box className="TripItinerary" sx={{ minWidth: { xs: 300, sm: 550, md: 700, lg: 900, xl: 1100 }, minHeight: 550 }}>
+        <Box className="TripItinerary" sx={{ minWidth: { xs: 360, sm: 560, md: 860, lg: 1100, xl: 1200 }, minHeight: 550 }}>
             <Typography variant='h4' sx={{ fontWeight: 'bold', textShadow: ' 2px 2px 4px grey', display: { xs: 'none', sm: 'block' } }}>
                 {trip.destination}
             </Typography>
