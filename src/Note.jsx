@@ -26,10 +26,11 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
     switch (note.category) {
         case 'url':
             categoryIcon = <LinkIcon />
-            noteType = <a href={note.content} target="_blank" >{note.content}</a>;
+            noteType = <a href={note.content} target="_blank" className="dont-break-out">{note.content}</a>;
             break;
         case 'image':
-            categoryIcon = <ImageIcon />
+            categoryIcon = null
+            // categoryIcon = <ImageIcon />
             //resizing: /c_scale,w_600
             //https://res.cloudinary.com/droagjbtj/image/upload/c_scale,w_600/v1705956844/TravelApp/fbyqkqhzww1ksj49rppk.jpg
             let imgUrl = note.content.split("upload");
@@ -41,7 +42,7 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
             categoryIcon = <HomeIcon />
             //https://www.google.com/maps/place/11037+Ohio+Ave,+Los+Angeles,+CA+90025/
             const addressString = "https://www.google.com/maps/place/" + note.content.replace(/\s+/g, '+')
-            noteType = <a href={addressString} target="_blank" sx={{ textDecoration: 'underline' }}>address: {note.content}</a>;
+            noteType = <a href={addressString} target="_blank" sx={{ textDecoration: 'underline' }}> {note.content}</a>;
             break;
         case 'note':
             categoryIcon = <NotesIcon />
@@ -55,8 +56,10 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
         <Box className="Note">
             {!editNoteFormVisible &&
                 <Box>
-
-                    {categoryIcon}{noteType}
+                    {categoryIcon}
+                    <br />
+                    {noteType}
+                    <br />
                     <Tooltip title="Edit this note">
                         <IconButton onClick={() => { setEditNoteFormVisible(true) }}>
                             <EditIcon />
