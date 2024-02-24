@@ -168,7 +168,7 @@ export default function Activity({ activity, deleteActivity, setUpdated, user, s
                 </Typography>}
             {formLocationVisible && <EditActivityLocationForm location={activity.location} submitFun={editLocation} cancelFun={cancelEditLocation} />}
             <Box>
-                <Typography sx={{ color: 'textcolor.link' }} component='div'>Notes:
+                <Typography sx={{ color: { xs: 'textcolor.light', sm: 'textcolor.link' } }} component='div'>Notes:
                     {!formAddNoteVisible &&
                         <Tooltip title="Add a note">
                             <IconButton onClick={() => { setFormAddNoteVisible(true) }}>

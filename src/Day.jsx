@@ -145,11 +145,11 @@ export default function Day({ day, deleteDay, user, setMessage, dayIndex, isOneD
                                 expandIcon={<ExpandMoreIcon />}
                                 aria-controls="panel-content"
                                 id={i}
-                                sx={{ color: 'textcolor.light' }}
+                                sx={{ color: 'textcolor.dark', border: `2px solid white` }}
                             >
-                                {activity.title} - {activity.location}
+                                {activity.title}
                             </AccordionSummary>
-                            <AccordionDetails>
+                            <AccordionDetails sx={{ backgroundColor: 'background.default' }}>
 
                                 <Activity
                                     activity={activity}
