@@ -72,14 +72,14 @@ form {
 
 a,
 a:visited {
-  color: #cccbcb;
+  color: #d8d8d8;
 }
 
 @media screen and (max-width: 600px) {
 
   a,
   a:visited {
-    color: #f1f0f0;
+    color: #706f6f;
   }
 
 }

@@ -16,9 +16,9 @@ const getDesignTokens = (mode) => ({
         },
         ...(mode === 'dark' && {
             background: {
-                main: cyan[300],
-                paper: cyan[300],
-                default: cyan[300],
+                main: cyan[400],
+                paper: cyan[400],
+                default: cyan[200],
             },
             textcolor: {
                 lightest: grey[300],
@@ -26,17 +26,17 @@ const getDesignTokens = (mode) => ({
                 main: grey[800],
                 dark: grey[900],
                 special: '#fff',
-                link: '#fff',
+                link: grey[100],
             },
         }),
         ...(mode === 'light' && {
             background: {
-                main: cyan[300],
-                paper: cyan[300],
-                default: cyan[300],
+                main: cyan[400],
+                paper: cyan[400],
+                default: cyan[100],
             },
             textcolor: {
-                lightest: grey[600],
+                lightest: grey[500],
                 light: grey[600],
                 main: grey[700],
                 dark: grey[800],
