@@ -85,7 +85,7 @@ a:visited {
 }
 
 a:hover {
-  color: #fedd64;
+  color: #fcdd6f;
 }
 
 input[type="text"],
@@ -183,7 +183,7 @@ textarea :focus {
   }
 
   a:hover {
-    color: orange;
+    color: #fccf29;
   }
 
   button {
