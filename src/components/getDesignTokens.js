@@ -27,6 +27,7 @@ const getDesignTokens = (mode) => ({
                 dark: grey[900],
                 special: '#fff',
                 link: grey[100],
+                icon: grey[700]
             },
         }),
         ...(mode === 'light' && {
@@ -42,6 +43,7 @@ const getDesignTokens = (mode) => ({
                 dark: grey[800],
                 special: '#fff',
                 link: grey[700],
+                icon: '#fff'
             },
         }),
         text: {
