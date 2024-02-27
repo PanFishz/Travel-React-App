@@ -64,7 +64,7 @@ const Login = ({ toRegister }) => {
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <Typography variant='h4'>Sign In</Typography>
             <form onSubmit={handleSubmit}>
-                <InputLabel htmlFor="username">Username:</InputLabel>
+                <InputLabel htmlFor="username" sx={{ color: 'textcolor.main' }}>Username:</InputLabel>
                 <Input
                     type="text"
                     id="username"
@@ -78,7 +78,7 @@ const Login = ({ toRegister }) => {
 
                 />
 
-                <InputLabel htmlFor="password">Password:</InputLabel>
+                <InputLabel htmlFor="password" sx={{ color: 'textcolor.main' }}>Password:</InputLabel>
                 <Input
                     id="password"
                     type={showPwd ? 'text' : 'password'}

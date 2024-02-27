@@ -12,7 +12,7 @@ export default function Authentication() {
     const [loginFormVisible, setLoginFormVisible] = useState(true)
 
     return (
-        <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5, maxWidth: '90vw' }}>
+        <Box sx={{ backgroundColor: 'primary.light', borderRadius: 5, maxWidth: '90vw', minWidth: { xs: '90vw', sm: '55vw', md: '45vw', lg: '30vw', xl: '25vw' } }}>
             <Typography variant='h3' sx={{
                 color: '#fff', fontWeight: 'bold', paddingTop: 10
             }}>WanderList</Typography>
@@ -30,7 +30,7 @@ export default function Authentication() {
 
                 </Box>
             </Box>
-        </Box>
+        </Box >
     )
 
 }
