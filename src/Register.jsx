@@ -116,6 +116,7 @@ const Register = ({ toLogin }) => {
                     onFocus={() => setUserFocus(true)}
                     onBlur={() => setUserFocus(false)}
                     disableUnderline={true}
+                    fullWidth={true}
                 />
                 <p id="uidnote" className={userFocus && user && !validName ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
@@ -152,6 +153,7 @@ const Register = ({ toLogin }) => {
                             </IconButton>
                         </InputAdornment>}
                     disableUnderline={true}
+                    fullWidth={true}
                 />
                 <p id="pwdnote" className={pwdFocus && !validPwd ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
@@ -177,6 +179,7 @@ const Register = ({ toLogin }) => {
                     onFocus={() => setMatchFocus(true)}
                     onBlur={() => setMatchFocus(false)}
                     disableUnderline={true}
+                    fullWidth={true}
                 />
                 <p id="confirmnote" className={matchFocus && !validMatch ? "instructions" : "offscreen"}>
                     <FontAwesomeIcon icon={faInfoCircle} />
