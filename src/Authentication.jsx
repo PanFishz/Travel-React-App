@@ -16,7 +16,7 @@ export default function Authentication() {
             <Typography variant='h3' sx={{
                 color: '#fff', fontWeight: 'bold', paddingTop: 10
             }}>WanderList</Typography>
-            <Box sx={{ paddingBottom: 10, paddingX: 10 }}>
+            <Box sx={{ paddingBottom: 10, paddingX: '12%' }}>
 
                 <Box>
 

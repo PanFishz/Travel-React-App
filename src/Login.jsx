@@ -74,6 +74,7 @@ const Login = ({ toRegister }) => {
                     value={user}
                     required
                     disableUnderline={true}
+                    fullWidth={true}
 
                 />
 
@@ -85,6 +86,7 @@ const Login = ({ toRegister }) => {
                     value={pwd}
                     required
                     disableUnderline={true}
+                    fullWidth={true}
                     endAdornment={
                         <InputAdornment position="end">
                             <IconButton
