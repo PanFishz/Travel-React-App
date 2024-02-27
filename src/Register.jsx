@@ -98,7 +98,7 @@ const Register = ({ toLogin }) => {
             <p ref={errRef} className={errMsg ? "errmsg" : "offscreen"} aria-live="assertive">{errMsg}</p>
             <Typography variant='h4'>Register</Typography>
             <form onSubmit={handleSubmit}>
-                <InputLabel htmlFor="username">
+                <InputLabel htmlFor="username" sx={{ color: 'textcolor.main' }}>
                     Username:
                     <FontAwesomeIcon icon={faCheck} className={validName ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validName || !user ? "hide" : "invalid"} />
@@ -126,7 +126,7 @@ const Register = ({ toLogin }) => {
                 </p>
 
 
-                <InputLabel htmlFor="password">
+                <InputLabel htmlFor="password" sx={{ color: 'textcolor.main' }}>
                     Password:
                     <FontAwesomeIcon icon={faCheck} className={validPwd ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validPwd || !pwd ? "hide" : "invalid"} />
@@ -163,7 +163,7 @@ const Register = ({ toLogin }) => {
                 </p>
 
 
-                <InputLabel htmlFor="confirm_pwd">
+                <InputLabel htmlFor="confirm_pwd" sx={{ color: 'textcolor.main' }}>
                     Confirm Password:
                     <FontAwesomeIcon icon={faCheck} className={validMatch && matchPwd ? "valid" : "hide"} />
                     <FontAwesomeIcon icon={faTimes} className={validMatch || !matchPwd ? "hide" : "invalid"} />
