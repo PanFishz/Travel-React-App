@@ -1,7 +1,6 @@
 // if in development, get environment variables from .env
 if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config();
-    //console.log(process.env.CLOUDINARY_CLOUD_NAME);    //to check
 }
 
 const express = require('express');
@@ -78,7 +77,7 @@ app.use(
 //middleware for cookies
 //app.use(cookieParser());
 
-// mongo atlas dbbase, if not provided, use local
+// mongo dbbase, if not provided, use local
 const mongoURI = process.env.DB_URL || "mongodb://127.0.0.1:27017/travel"
 //for development from not-whitelisted Api, use local 
 //const dbUrl = 'mongodb://localhost:27017/Gearedmind'
@@ -88,8 +87,6 @@ const connectToMongo = async () => {
         mongoose.set('strictQuery', false)
         mongoose.connect(mongoURI)
         console.log('Mongo connected!!')
-        // const trip = await TripModel.findOne({ destination: 'NY' })
-        // console.log(trip)
     }
     catch (error) {
         console.log(error)
