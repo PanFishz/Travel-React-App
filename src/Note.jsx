@@ -26,7 +26,8 @@ export default function Note({ note, deleteNote, editNote, submitImageFun, setMe
     switch (note.category) {
         case 'url':
             categoryIcon = <LinkIcon />
-            let note_url =  "http://" + note.content
+            let note = note.content
+            let note_url =  note.startsWith("http") ? (note) : ("http://" + note)
             noteType = <a href={note_url} target="_blank" className="dont-break-out">{note.content}</a>;
             break;
         case 'image':
